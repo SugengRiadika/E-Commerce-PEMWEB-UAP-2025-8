@@ -68,8 +68,8 @@ class ProductSeeder extends Seeder
         Product::create([  
         'store_id'=>1,
         'product_category_id'=>3,
-        'name'=>'TechMate 2-in-1 Laptop Pro',
-        'slug'=>'techmate-2-in-1-laptop-pro',
+        'name'=>'TravelMate 2-in-1 Laptop Pro',
+        'slug'=>'travelmate-2-in-1-laptop-pro',
         'description'=>'A versatile 2-in-1 laptop that can be used as a tablet or laptop.',
         'condition'=>'new',
         'price'=>1300,
