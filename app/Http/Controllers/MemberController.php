@@ -14,7 +14,7 @@ class MemberController extends Controller
         $categories = ProductCategory::all();
 
         // 4 produk terbaru
-        $latestProducts = Product::with('store')->latest()->take(4)->get();
+        $latestProducts = Product::with('store')->latest()->take(6)->get();
 
         // 4 toko terbaru
         $latestStores = Store::latest()->take(4)->get();

@@ -106,12 +106,31 @@ body.dashboard-body { display: block; height: auto; padding: 0; background-color
 
 /* Navbar */
 .navbar { background-color: #1f2937; box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3); padding: 15px 0; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #374151; }
-.nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
-.logo { display: flex; align-items: center; gap: 10px; color: #ffffff; font-size: 20px; font-weight: 700; }
+.nav-container { 
+    max-width: 98%; 
+    margin: 0 auto; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 0 20px;
+    height: 40px; 
+}
+/* Mengatur ukuran gambar logo */
+/* Pastikan ini ada di style.css Anda */
+.logo {
+    display: flex;
+    align-items: center; /* Membuat logo sejajar vertikal dengan menu */
+    gap: 10px;
+}
+.logo img {
+    height: 40px; /* Sesuaikan tinggi agar muat di navbar */
+    width: auto;  /* Lebar akan menyesuaikan otomatis agar tidak gepeng */
+    object-fit: contain; /* Memastikan gambar tidak terpotong */
+}
 .nav-links { list-style: none; display: flex; gap: 30px; }
 .nav-links a { text-decoration: none; color: #9ca3af; font-weight: 500; font-size: 14px; transition: 0.3s; }
 .nav-links a:hover, .nav-links a.active { color: #ffffff; }
-.nav-actions { display: flex; gap: 15px; align-items: center; }
+.nav-actions { display: flex; gap: 20px; align-items: center; }
 
 /* Search Box & Buttons */
 .search-box { position: relative; }
@@ -126,7 +145,7 @@ body.dashboard-body { display: block; height: auto; padding: 0; background-color
 .btn-icon-nav:hover i { color: #ffffff; }
 
 /* Main Grid Layout */
-.container { max-width: 1200px; margin: 30px auto; padding: 0 20px; display: grid; grid-template-columns: 240px 1fr 260px; gap: 25px; }
+.container { max-width: 98%; margin: 30px auto; padding: 0 20px; display: grid; grid-template-columns: 240px 1fr 260px; gap: 25px; }
 
 /* Cards & Components */
 .card { background: #1f2937; border-radius: 20px; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2); padding: 20px; margin-bottom: 20px; overflow: hidden; border: 1px solid #374151; }
@@ -145,9 +164,17 @@ body.dashboard-body { display: block; height: auto; padding: 0; background-color
 .promo-icon { font-size: 100px; opacity: 0.2; transform: rotate(-15deg); }
 
 .section-header h3 { margin-bottom: 20px; color: #ffffff; font-size: 18px; }
-.product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.product-grid { display: grid; grid-template-columns: repeat(3, 1fr); 
+    gap: 20px; }
 .product-card { padding: 0; display: flex; flex-direction: column; }
-.product-img { height: 180px; background-color: #111827; display: flex; justify-content: center; align-items: center; font-size: 60px; color: #374151; }
+.product-img { width: 100%;               /* Lebar mengikuti container card */
+    aspect-ratio: 1 / 1;       /* KUNCI: Memaksa rasio 1 banding 1 (Persegi) */
+    background-color: #111827; /* Warna background jika gambar transparan/loading */
+    border-radius: 15px;       /* Opsional: memberi lengkungan di sudut gambar */
+    overflow: hidden;          /* Memotong bagian gambar yang keluar dari kotak */
+    display: flex;             /* Untuk menjaga posisi jika tidak ada gambar */
+    justify-content: center;
+    align-items: center;}
 .product-info { padding: 20px; }
 .product-info h4 { font-size: 16px; color: #f3f4f6; margin-bottom: 5px; }
 .category-tag { font-size: 11px; color: #d1d5db; background: #374151; padding: 3px 8px; border-radius: 4px; }

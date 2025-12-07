@@ -17,30 +17,29 @@
     <nav class="navbar">
         <div class="nav-container">
             <div class="logo">
-                <div class="logo-icon"><i class="fa-solid fa-cube"></i></div>
-                <span class="logo-text">Hardware_JosJis😂</span>
+                <img src="{{ asset('ImageSource/josjis_logo.png') }}" alt="Logo josjis">
+                <span class="logo-text">Hardware_JosJis</span>
             </div>
             <ul class="nav-links">
                 <li><a href="/" class="active">Home</a></li>
                 <li><a href="history.html">Riwayat Transaksi</a></li>
                 <li><a href="topup.html">Topup Saldo</a></li>
-                <li><a href="contact.html">Contact Us</a></li>
+
             </ul>
             <div class="nav-actions">
                 <div class="search-box"><i class="fa-solid fa-search"></i><input type="text"
                         placeholder="Cari produk..."></div>
-                          <div class="info-item" style="border:none; margin:0; padding:0; text-align:right;">
+                <div class="info-item" style="border:none; margin:0; padding:0; text-align:right;">
                     <small style="color:#9ca3af;">halo, </small>
                     <span style="color:#fff; font-weight:600;">{{Auth::user()->name}}</span>
                 </div>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                        <a href="route('logout')"
-                                    onclick="event.preventDefault();
-                                                this.closest('form').submit();"
-                                                  class="btn-nav-logout">
-                                {{ __('Log out') }}</a></li>
-                    </form>
+                    <a href="#" onclick="event.preventDefault(); this.closest('form').submit();" class="btn-nav-logout">
+                        {{ __('Log out') }}
+                    </a>
+                </form>
+
             </div>
         </div>
     </nav>
@@ -52,14 +51,14 @@
                     <h3>Kategori Produk</h3>
                 </div>
                 <ul class="category-list">
-    @foreach($categories as $category)
-        <li>
-            <a href="{{ url('member/category/' . $category->slug) }}">
-                {{ $category->name }}
-            </a>
-        </li>
-    @endforeach
-</ul>
+                    @foreach($categories as $category)
+                        <li>
+                            <a href="{{ url('member/category/' . $category->slug) }}">
+                                {{ $category->name }}
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
             </div>
         </aside>
 
@@ -78,17 +77,21 @@
             </div>
             <div class="product-grid">
                 @foreach($latestProducts as $product)
-                <div class="card product-card">
-                    <div class="product-img"><img src="{{ asset('ImageSource/' . $product->slug . '.png') }}" class="product-img"></div>
-                    <div class="product-info">
-                        <h4><a href="product/{{ $product->slug }}" style="text-decoration: none; color: inherit;">{{ $product->name }}</a></h4>
-                        <span class="category-tag">Accessory</span>
-                        <div class="price-row"><span class="price">Rp {{ number_format($product->price, 0, ',', '.') . '.000' }}</span><a href="product/{{ $product->slug }}"
-                                class="btn-icon"><i class="fa-solid fa-chevron-right"></i></a></div>
+                    <div class="card product-card">
+                        <div class="product-img"><img src="{{ asset('ImageSource/' . $product->slug . '.png') }}"
+                                class="product-img"></div>
+                        <div class="product-info">
+                            <h4><a href="product/{{ $product->slug }}"
+                                    style="text-decoration: none; color: inherit;">{{ $product->name }}</a></h4>
+                            <span class="category-tag">Accessory</span>
+                            <div class="price-row"><span class="price">Rp
+                                    {{ number_format($product->price, 0, ',', '.') . '.000' }}</span><a
+                                    href="product/{{ $product->slug }}" class="btn-icon"><i
+                                        class="fa-solid fa-chevron-right"></i></a></div>
+                        </div>
                     </div>
-                </div>
-        @endforeach
-                
+                @endforeach
+
             </div>
         </main>
 
@@ -98,9 +101,10 @@
                     <h3>Cabang / Lokasi</h3>
                 </div>
                 <ul class="location-list">
-                     @foreach($latestStores as $store)
-                    <li><a href="store/{{ $store->id}}"style="text-decoration: none; color: inherit;"><i class="fa-solid fa-store"></i> <span>{{ $store->name }}</span></a>
-                    </li>
+                    @foreach($latestStores as $store)
+                        <li><a href="store/{{ $store->id}}" style="text-decoration: none; color: inherit;"><i
+                                    class="fa-solid fa-store"></i> <span>{{ $store->name }}</span></a>
+                        </li>
                     @endforeach
                 </ul>
             </div>
