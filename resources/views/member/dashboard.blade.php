@@ -24,11 +24,15 @@
                 <li><a href="/" class="active">Home</a></li>
                 <li><a href="history.html">Riwayat Transaksi</a></li>
                 <li><a href="topup.html">Topup Saldo</a></li>
-
+                <li><a href="tokoSaya.html">Toko Saya</a></li>
             </ul>
             <div class="nav-actions">
-                <div class="search-box"><i class="fa-solid fa-search"></i><input type="text"
-                        placeholder="Cari produk..."></div>
+
+                         <div class="search-box">
+                        <form action="{{ route('member.dashboard') }}" method="GET">
+                        <i class="fa-solid fa-search"></i><input type="text"
+                            name="search" placeholder="Cari produk..." style="width: 200px;" value="{{ $search }}" ></form></div>
+
                 <div class="info-item" style="border:none; margin:0; padding:0; text-align:right;">
                     <small style="color:#9ca3af;">halo, </small>
                     <span style="color:#fff; font-weight:600;">{{Auth::user()->name}}</span>
@@ -69,11 +73,13 @@
                     <h1>Hardware_JosJis😂</h1>
                     <p>Full laptop & hardware harga bitcoin boloo..</p>
                 </div>
-                <div class="promo-icon"><i class="fa-solid fa-gamepad"></i></div>
+                <div class="logo_dash">
+                <img src="{{ asset('ImageSource/josjis_logo.png') }}" alt="Logo josjis">
+            </div>
             </div>
 
             <div class="section-header">
-                <h3>Produk Terbaru</h3>
+                <h3>Produk Terbaru loh yaa</h3>
             </div>
             <div class="product-grid">
                 @foreach($latestProducts as $product)
