@@ -3,7 +3,7 @@
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -22,11 +22,11 @@ Route::middleware('auth')->group(function () {
 
 // User CRUD (admin only)
 Route::middleware(['auth', 'admin.only'])->group(function () {
-    Route::resource('user', UserController::class);
-}); 
-Route::middleware(['auth', 'admin.only'])
-    ->get('/admin/dashboard', fn() => view('admin.dashboard'))
-    ->name('admin.dashboard');
+    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::put('/admin/store/{id}/verify', [AdminController::class, 'verifyStore'])->name('admin.store.verify');
+    Route::delete('/admin/store/{id}/reject', [AdminController::class, 'rejectStore'])->name('admin.store.reject');
+    Route::get('/admin/users', [AdminController::class, 'manage'])->name('admin.users');
+});
 
 Route::middleware(['auth', 'seller.only'])
     ->get('/seller/dashboard', fn() => view('seller.dashboard'))
