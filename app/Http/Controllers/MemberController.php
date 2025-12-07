@@ -12,9 +12,14 @@ class MemberController extends Controller
     {
         // Semua kategori
         $categories = ProductCategory::all();
-
         // 4 produk terbaru
-        $latestProducts = Product::with('store')->latest()->take(6)->get();
+        $search = request('search'); // ambil query dari input search
+        $latestProducts = Product::with('store','productCategory')->latest()->when($search, function ($query) use ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'LIKE', "%{$search}%")
+                      ->orWhere('description', 'LIKE', "%{$search}%");
+                });
+            })->take(6)->get();
 
         // 4 toko terbaru
         $latestStores = Store::latest()->take(4)->get();
@@ -22,7 +27,8 @@ class MemberController extends Controller
         return view('member.dashboard', compact(
             'categories',
             'latestProducts',
-            'latestStores'
+            'latestStores',
+            'search'
         ));
     }
 }

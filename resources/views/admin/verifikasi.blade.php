@@ -38,13 +38,14 @@
                     <h3>Menu Utama</h3>
                 </div>
                 <ul class="category-list">
-                    <li><a href="#" class="active" style="background: #374151; color: white;"><i
+                    <li><a href="/admin/dashboard" class="active" style=" color: white;"><i
                                 class="fa-solid fa-gauge-high" style="width: 25px;"></i> Dashboard</a></li>
                     <li
                         style="margin-top: 15px; font-size: 11px; color: #ef4444; font-weight: bold; padding-left: 15px;">
                         VERIFIKASI</li>
-                    <li><a href="/admin/verifikasi"><i class="fa-solid fa-check-double" style="width: 25px;"></i>
-                            Verifikasi Toko <span class="badge bg-pending" style="float: right; font-size: 10px;">{{ $totalPendingStores }}
+                    <li><a href="/admin/verifikasi" style="background: #374151;"><i class="fa-solid fa-check-double" style="width: 25px;"></i>
+                            Verifikasi Toko <span class="badge bg-pending"
+                                style="float: right; font-size: 10px;">{{ $totalPendingStores }}
                                 Toko</span></a></li>
                     <li
                         style="margin-top: 15px; font-size: 11px; color: #ef4444; font-weight: bold; padding-left: 15px;">
@@ -66,42 +67,23 @@
         </aside>
 
         <main class="content-center">
-            <div class="section-header page-title">
-                <h3>Dashboard Overview</h3>
-            </div>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div>
-                        <h4>Menunggu Verifikasi</h4>
-                        <div class="num" style="color: #facc15;">{{ $totalPendingStores }}</div>
-                    </div><i class="fa-solid fa-hourglass-half" style="font-size: 30px; color: #4b5563;"></i>
-                </div>
-                <div class="stat-card">
-                    <div>
-                        <h4>Total User</h4>
-                        <div class="num">{{ $totalUsers }}</div>
-                    </div><i class="fa-solid fa-users" style="font-size: 30px; color: #4b5563;"></i>
-                </div>
-                <div class="stat-card">
-                    <div>
-                        <h4>Toko Aktif</h4>
-                        <div class="num" style="color: #4ade80;">{{ $totalActiveStores }}</div>
-                    </div><i class="fa-solid fa-shop" style="font-size: 30px; color: #4b5563;"></i>
-                </div>
-                <div class="stat-card">
-                    <div>
-                        <h4>Total Transaksi</h4>
-                        <div class="num" style="color: tomato">{{ $totalTransactions }}</div>
-                    </div><i class="fa-solid fa-chart-pie" style="font-size: 30px; color: #63554bff;"></i>
-                </div>
-            </div>
 
             <div class="card">
-                <div class="card-header-sm" style="border-left: 4px solid #facc15; padding-left: 15px;">
-                    <h3>Permintaan Verifikasi Toko Terbaru</h3>
-                    <p style="font-size: 12px; color: #9ca3af; margin-top: 5px;">Daftar toko yang statusnya
-                        <code>is_verified: false</code>.
-                    </p>
+                <div class="card-header-sm"
+                    style="border-left: 4px solid #facc15; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h3 style="margin-left : 10px;">Permintaan Verifikasi Toko Terbaru</h3>
+                        <p style="font-size: 12px; color: #9ca3af; margin-top: 5px; margin-left: 10px;">Daftar toko yang statusnya
+                            <code>is_verified: false</code>.
+                        </p>
+                    </div>
+
+                    <div class="search-box">
+                        <form action="{{ route('admin.verifikasi') }}" method="GET">
+                            <i class="fa-solid fa-search"></i><input type="text" name="search"
+                                placeholder="Cari nama / email..." style="width: 200px;" value="{{ $search }}">
+                        </form>
+                    </div>
                 </div>
                 <table class="data-table">
                     <thead>
@@ -127,69 +109,31 @@
                                 <!-- Verifikasi -->
                                 <td>
                                     <div class="action-btn-group">
-                                <form action="{{ route('admin.store.verify', $store->id) }}" method="POST">
-                                    @csrf
-                                    @method('PUT')
-                                    <button class="btn-action btn-verify" title="Verifikasi / Approve" type="submit"
-                                                onclick="return confirm('Verifikasi toko ini?')"><i
-                                                    class="fa-solid fa-check"></i> Terima</button>
+                                    <form action="{{ route('admin.store.verify', $store->id) }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <button class="btn-action btn-verify" title="Verifikasi / Approve" type="submit"
+                                            onclick="return confirm('Verifikasi toko ini?')"><i
+                                                class="fa-solid fa-check"></i> Terima</button>
                                     </form>
                                     <form action="{{ route('admin.store.reject', $store->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button class="btn-action btn-reject" title="Tolak Pendaftaran" type="submit"
                                             onclick="return confirm('Tolak pendaftaran toko ini?')"><i
-                                            class="fa-solid fa-xmark"></i> Tolak</button>
-                                        </form>
-                                        </div>
-                                    </td>
+                                                class="fa-solid fa-xmark"></i> Tolak</button>
+                                    </form>
+                                    </div>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
 
-            <div class="card" style="margin-top: 30px;">
-                <div class="card-header-sm" style="display: flex; justify-content: space-between; align-items: center;">
-                    <h3>Pengguna terbaru</h3>
-                    <div class="search-box">
-                        <form action="{{ route('admin.dashboard') }}" method="GET">
-                        <i class="fa-solid fa-search"></i><input type="text"
-                            name="search" placeholder="Cari nama / email..." style="width: 200px;" value="{{ $search }}" ></form></div>
-                </div>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>User Info</th>
-                            <th>Email</th>
-                            <th>Role</th>
-                            <th>Toko Terkait</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                            @foreach ($users as $user)
-                            @php
-                            $isSeller = $user->store && $user->store->is_verified;
-            @endphp
-                        <tr>
-                            <td>
-                                <div class="user-cell">
-                                    <div class="avatar-sm">AD</div>
-                                    <div>
-                                        <div style="font-weight: 600; color: #fff;">{{ $user->name }}</div><small
-                                        style="color: #9ca3af;">{{ $user->email }}</small>
-                                    </div>
-                                </div>
-                            </td>
-                            <td><span style="color: #4ade80;">{{ $user->email }}</span></td>
-                            <td><span class="badge" style="background: {{ $isSeller ? 'green' : 'black' }}; color: #d1d5db;">{{ $isSeller ? 'Seller' : 'Buyer' }}</span></td>
-                            <td>{{ $isSeller ? $user->store->name : '-' }}</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </main>
+
+    </div>
+    </main>
     </div>
 </body>
 

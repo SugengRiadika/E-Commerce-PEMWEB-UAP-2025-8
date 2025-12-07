@@ -26,6 +26,8 @@ Route::middleware(['auth', 'admin.only'])->group(function () {
     Route::put('/admin/store/{id}/verify', [AdminController::class, 'verifyStore'])->name('admin.store.verify');
     Route::delete('/admin/store/{id}/reject', [AdminController::class, 'rejectStore'])->name('admin.store.reject');
     Route::get('/admin/users', [AdminController::class, 'manage'])->name('admin.users');
+    Route::get('/admin/verifikasi', [AdminController::class, 'verifikasi'])->name('admin.verifikasi');
+    Route::get('/admin/stores', [AdminController::class, 'toko'])->name('admin.stores');
 });
 
 Route::middleware(['auth', 'seller.only'])

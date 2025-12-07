@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Panel Kontrol</title>
+    <title>Gasol Admin - Panel Kontrol</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -17,7 +17,7 @@
         <div class="nav-container" style="max-width: 1400px;">
             <div class="logo">
                 <div class="logo-icon" style="color: #ef4444;"><i class="fa-solid fa-shield-halved"></i></div>
-                <span class="logo-text">Admin Panel Control</span>
+                <span class="logo-text">Gasol Admin Panel</span>
             </div>
             <div class="nav-actions">
                 <div class="info-item" style="border:none; margin:0; padding:0; text-align:right;">
@@ -38,7 +38,7 @@
                     <h3>Menu Utama</h3>
                 </div>
                 <ul class="category-list">
-                    <li><a href="#" class="active" style="background: #374151; color: white;"><i
+                    <li><a href="/admin/dashboard" style="color: white;"><i
                                 class="fa-solid fa-gauge-high" style="width: 25px;"></i> Dashboard</a></li>
                     <li
                         style="margin-top: 15px; font-size: 11px; color: #ef4444; font-weight: bold; padding-left: 15px;">
@@ -49,7 +49,7 @@
                     <li
                         style="margin-top: 15px; font-size: 11px; color: #ef4444; font-weight: bold; padding-left: 15px;">
                         MANAJEMEN DATA</li>
-                    <li><a href="/admin/users"><i class="fa-solid fa-users" style="width: 25px;"></i> Data Pengguna</a>
+                    <li><a class="active" style="background: #374151;" href="/admin/users"><i class="fa-solid fa-users" style="width: 25px;"></i> Data Pengguna</a>
                     </li>
                     <li><a href="/admin/stores"><i class="fa-solid fa-store" style="width: 25px;"></i> Data Toko</a>
                     </li>
@@ -66,94 +66,11 @@
         </aside>
 
         <main class="content-center">
-            <div class="section-header page-title">
-                <h3>Dashboard Overview</h3>
-            </div>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div>
-                        <h4>Menunggu Verifikasi</h4>
-                        <div class="num" style="color: #facc15;">{{ $totalPendingStores }}</div>
-                    </div><i class="fa-solid fa-hourglass-half" style="font-size: 30px; color: #4b5563;"></i>
-                </div>
-                <div class="stat-card">
-                    <div>
-                        <h4>Total User</h4>
-                        <div class="num">{{ $totalUsers }}</div>
-                    </div><i class="fa-solid fa-users" style="font-size: 30px; color: #4b5563;"></i>
-                </div>
-                <div class="stat-card">
-                    <div>
-                        <h4>Toko Aktif</h4>
-                        <div class="num" style="color: #4ade80;">{{ $totalActiveStores }}</div>
-                    </div><i class="fa-solid fa-shop" style="font-size: 30px; color: #4b5563;"></i>
-                </div>
-                <div class="stat-card">
-                    <div>
-                        <h4>Total Transaksi</h4>
-                        <div class="num" style="color: tomato">{{ $totalTransactions }}</div>
-                    </div><i class="fa-solid fa-chart-pie" style="font-size: 30px; color: #63554bff;"></i>
-                </div>
-            </div>
-
             <div class="card">
-                <div class="card-header-sm" style="border-left: 4px solid #facc15; padding-left: 15px;">
-                    <h3>Permintaan Verifikasi Toko Terbaru</h3>
-                    <p style="font-size: 12px; color: #9ca3af; margin-top: 5px;">Daftar toko yang statusnya
-                        <code>is_verified: false</code>.
-                    </p>
-                </div>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Nama Toko</th>
-                            <th>Pemilik (User)</th>
-                            <th>No Handphone</th>
-                            <th>Kota</th>
-                            <th>Tindakan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($pendingStoresData as $store)
-                            <tr>
-                                <td>
-                                    <div style="font-weight: 600; color: #fff;">{{ $store->name }}</div><small
-                                        style="color: #9ca3af;">ID:
-                                        STR-{{ str_pad($store->id, 3, '0', STR_PAD_LEFT) }}</small>
-                                </td>
-                                <td>{{ $store->user->name }}</td>
-                                <td>{{ $store->phone }}</td>
-                                <td>{{ $store->city }}</td>
-                                <!-- Verifikasi -->
-                                <td>
-                                    <div class="action-btn-group">
-                                <form action="{{ route('admin.store.verify', $store->id) }}" method="POST">
-                                    @csrf
-                                    @method('PUT')
-                                    <button class="btn-action btn-verify" title="Verifikasi / Approve" type="submit"
-                                                onclick="return confirm('Verifikasi toko ini?')"><i
-                                                    class="fa-solid fa-check"></i> Terima</button>
-                                    </form>
-                                    <form action="{{ route('admin.store.reject', $store->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="btn-action btn-reject" title="Tolak Pendaftaran" type="submit"
-                                            onclick="return confirm('Tolak pendaftaran toko ini?')"><i
-                                            class="fa-solid fa-xmark"></i> Tolak</button>
-                                        </form>
-                                        </div>
-                                    </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="card" style="margin-top: 30px;">
                 <div class="card-header-sm" style="display: flex; justify-content: space-between; align-items: center;">
-                    <h3>Pengguna terbaru</h3>
+                    <h3>Daftar Semua Pengguna</h3>
                     <div class="search-box">
-                        <form action="{{ route('admin.dashboard') }}" method="GET">
+                        <form action="{{ route('admin.users') }}" method="GET">
                         <i class="fa-solid fa-search"></i><input type="text"
                             name="search" placeholder="Cari nama / email..." style="width: 200px;" value="{{ $search }}" ></form></div>
                 </div>
