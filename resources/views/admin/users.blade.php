@@ -100,13 +100,13 @@
                                 </div>
                             </td>
                             <td><span style="color: #4ade80;">{{ $user->email }}</span></td>
-                            <td><span class="badge" style="background: {{ $isSeller ? 'green' : 'black' }}; color: #d1d5db;">{{ $isSeller ? 'Seller' : 'Buyer' }}</span></td>
+                            <td><span class="badge" style="background: {{ $isSeller ? '#fa8b15ff' : '#4a4a4aff' }}; color: #ffffffff;">{{ $isSeller ? 'Seller' : 'Buyer' }}</span></td>
                             <td>{{ $isSeller ? $user->store->name : '-' }}</td>
                              <td>
                                     <div class="action-btn-group">
                                         <a href="{{ route('admin.users.edit', $user->id) }}">
-                                            <button class="btn-action btn-verify" title="Edit" type="submit"><i
-                                                            class="fa-solid fa-check"></i> Edit</button>
+                                            <button class="btn-action btn-edit" title="Edit" type="submit"><i
+                                                            class="fa-solid fa-pen-to-square"></i>  Edit</button>
 
                                         </a>
                                     <form action="{{ route('admin.users.delete', $user->id) }}" method="POST">

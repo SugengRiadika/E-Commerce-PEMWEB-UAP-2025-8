@@ -70,7 +70,7 @@
             <div class="promo-banner">
                 <div class="promo-text">
                     <h2>Welcome To</h2>
-                    <h1>Hardware_JosJis😂</h1>
+                    <h1>Hardware_JosJis</h1>
                     <p>Full laptop & hardware harga bitcoin boloo..</p>
                 </div>
                 <div class="logo_dash">

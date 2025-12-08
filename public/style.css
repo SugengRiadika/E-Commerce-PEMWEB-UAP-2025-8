@@ -1146,6 +1146,10 @@ body.dashboard-body {
     background-color: #059669;
 }
 
+.btn-edit {
+    background-color: #0b42d9;
+}
+
 .btn-reject {
     background-color: #dc2626;
 }
