@@ -11,19 +11,15 @@
 <body class="dashboard-body">
 
     <nav class="navbar" style="border-bottom: 1px solid #ef4444;">
-        <div class="nav-container">
+        <div class="nav-container" style="max-width: 1400px;">
             <div class="logo">
                 <div class="logo-icon" style="color: #ef4444;"><i class="fa-solid fa-shield-halved"></i></div>
-                <span class="logo-text">Gasol Admin Panel</span>
+                <span class="logo-text">Admin Panel Control</span>
             </div>
-            <ul class="nav-links">
-                <li><a href="admin-dashboard.html">Dashboard</a></li>
-                <li><a href="admin-users.html" class="active">Users</a></li>
-            </ul>
             <div class="nav-actions">
                 <div class="info-item" style="border:none; margin:0; padding:0; text-align:right;">
                     <small style="color:#9ca3af;">Login sebagai,</small>
-                    <span style="color:#fff; font-weight:600;">Super Admin</span>
+                    <span style="color:#fff; font-weight:600;">{{Auth::user()->name}} </span>
                 </div>
                 <div class="trx-img" style="width: 35px; height: 35px; font-size: 1rem; color: #ef4444;">
                     <i class="fa-solid fa-user-shield"></i>
@@ -119,16 +115,14 @@
                     <hr style="border: 0; border-top: 1px solid #374151; margin: 25px 0;">
 
                     <div style="display: flex; gap: 15px;">
-                        <a href="{{ route('admin.users') }}" onclick="">
-                            <button type="submit" class="submit-btn" style="background-color: #059669; color: white; flex: 1;">
-                                <i class="fa-solid fa-save"></i> Simpan Perubahan
-                            </button>
-                        </a>
-                        
-                        <a href="{{ route('admin.users') }}" class="submit-btn" style="background-color: #374151; color: #d1d5db; text-decoration: none; text-align: center; flex: 1;">
-                            Batal
-                        </a>
-                    </div>
+    <button type="submit" class="submit-btn" style="background-color: #059669; color: white; flex: 1;">
+        <i class="fa-solid fa-save"></i> Simpan Perubahan
+    </button>
+    
+    <a href="{{ route('admin.users') }}" class="submit-btn" style="background-color: #374151; color: #d1d5db; text-decoration: none; text-align: center; flex: 1; display: flex; align-items: center; justify-content: center;">
+        Batal
+    </a>
+</div>
                 </form>
                 </div>
         </main>

@@ -36,16 +36,20 @@ Route::middleware(['auth', 'admin.only'])->group(function () {
     Route::get('/admin/stores', [AdminController::class, 'toko'])->name('admin.stores');
 });
 Route::middleware(['auth', 'seller.only'])
-    ->get('/seller/dashboard', fn() => view('seller.dashboard'))
-    ->name('seller.dashboard');
+->get('/seller/dashboard', fn() => view('seller.dashboard'))
+->name('seller.dashboard');
 
 Route::middleware(['auth', 'member.only'])->group(function () {
     Route::get('/member/dashboard', [MemberController::class, 'index'])->name('member.dashboard');
     Route::get('/member/category/{slug}', [MemberController::class, 'sortbycategory'])->name('member.category');
     Route::get('/member/product/{id}', [MemberController::class, 'getProduct'])->name('member.product');
+    Route::get('/member/checkout/{id}', [MemberController::class, 'checkout'])->name('member.checkout');
+    Route::put('/member', [MemberController::class, 'checkoutProduct'])->name('member.checkout.proses');
+    Route::get('/member/productcreate', [MemberController::class, 'createProduct'])->name('member.productcreate');
     Route::get('/member/transactionHistory', [MemberController::class, 'getTransaction'])->name('member.transactionHistory');
     Route::get('/member/topup', [MemberController::class, 'getTopup'])->name('member.topup');
     Route::get('/member/store', [MemberController::class, 'getStore'])->name('member.store');
+    Route::post('/member/store', [MemberController::class, 'postStore'])->name('member.store.save');
 });
 
 

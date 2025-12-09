@@ -17,7 +17,7 @@
         <div class="nav-container" style="max-width: 1400px;">
             <div class="logo">
                 <div class="logo-icon" style="color: #ef4444;"><i class="fa-solid fa-shield-halved"></i></div>
-                <span class="logo-text">Gasol Admin Panel</span>
+                <span class="logo-text">Admin Panel Control</span>
             </div>
             <div class="nav-actions">
                 <div class="info-item" style="border:none; margin:0; padding:0; text-align:right;">
