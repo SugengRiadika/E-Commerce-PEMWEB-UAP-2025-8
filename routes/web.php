@@ -31,6 +31,7 @@ Route::middleware(['auth', 'admin.only'])->group(function () {
     Route::get('/admin/users/{id}/edit', [AdminController::class, 'edituser'])->name('admin.users.edit');
     Route::put('/admin/users/{id}', [AdminController::class, 'updateuser'])->name('admin.users.update');
     Route::delete('/admin/users/{id}', [AdminController::class, 'destroyuser'])->name('admin.users.delete');
+    Route::delete('/admin/stores/{id}', [AdminController::class, 'destroystore'])->name('admin.stores.delete');
     Route::get('/admin/verifikasi', [AdminController::class, 'verifikasi'])->name('admin.verifikasi');
     Route::get('/admin/stores', [AdminController::class, 'toko'])->name('admin.stores');
 });
@@ -40,6 +41,8 @@ Route::middleware(['auth', 'seller.only'])
 
 Route::middleware(['auth', 'member.only'])->group(function () {
     Route::get('/member/dashboard', [MemberController::class, 'index'])->name('member.dashboard');
+    Route::get('/member/category/{slug}', [MemberController::class, 'sortbycategory'])->name('member.category');
+    Route::get('/member/product/{id}', [MemberController::class, 'getProduct'])->name('member.product');
 });
 
 

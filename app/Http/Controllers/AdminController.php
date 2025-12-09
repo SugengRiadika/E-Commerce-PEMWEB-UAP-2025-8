@@ -107,6 +107,19 @@ class AdminController extends Controller
         return redirect()->route('admin.users')
             ->with('success', 'User berhasil dihapus.');
     }
+    public function destroystore($id)
+    {
+        $store = Store::findOrFail($id);
+
+        // Jika user punya toko → hapus juga
+        if ($store->user) {
+            $store->user->delete();
+        }
+
+        $store->delete();
+        return redirect()->route('admin.stores')
+            ->with('success', 'Toko berhasil dihapus.');
+    }
 
     public function manage()
     {

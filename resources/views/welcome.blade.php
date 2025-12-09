@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hardware_JosJis - Upgrade Your Gear</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href={{asset('style.css')}}>
 
@@ -36,7 +38,7 @@
             overflow: hidden;
             position: relative;
         }
-        
+
         /* Menggunakan style gradient dari CSS lama untuk aksen */
         .hero-blob {
             position: absolute;
@@ -49,39 +51,30 @@
             z-index: 0;
         }
 
-        .hero-text { z-index: 1; max-width: 50%; }
-        .hero-text h1 { font-size: 48px; line-height: 1.2; margin-bottom: 20px; background: linear-gradient(to right, #fff, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .hero-text p { font-size: 16px; color: #9ca3af; margin-bottom: 30px; line-height: 1.6; }
+        .hero-text {
+            z-index: 1;
+            max-width: 50%;
+        }
+
+        .hero-text h1 {
+            font-size: 48px;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #fff, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-text p {
+            font-size: 16px;
+            color: #9ca3af;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
 
         .hero-image { z-index: 1; width:45%; display: flex; justify-content: center; }
         .hero-image img { max-width: 100%; filter: drop-shadow(0 20px 30px rgba(0,0,0,0.5)); transform: rotate(-5deg); transition: 0.5s; }
         .hero-image img:hover { transform: rotate(0deg) scale(1.05); }
-
-        /* --- NEW: BRAND MARQUEE --- */
-        .brand-marquee {
-            overflow: hidden;
-            padding: 30px 0;
-            background: rgba(255, 255, 255, 0.02);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            white-space: nowrap;
-            position: relative;
-            margin: 40px 0;
-        }
-        .brand-marquee::before, .brand-marquee::after {
-            content: ""; position: absolute; top: 0; width: 100px; height: 100%; z-index: 2;
-        }
-        .brand-marquee::before { left: 0; background: linear-gradient(to right, #131a2bff, transparent); }
-        .brand-marquee::after { right: 0; background: linear-gradient(to left, #131a2bff, transparent); }
-
-        .marquee-content { display: inline-block; animation: marquee 20s linear infinite; }
-        .marquee-content span {
-            font-size: 20px; font-weight: 600; color: #6b7280; margin: 0 40px;
-            display: inline-flex; align-items: center; gap: 10px; transition: 0.3s;
-        }
-        .marquee-content span:hover { color: #fff; }
-
-        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
         /* Fitur Grid (Reuse style stats-grid tapi di-tweak) */
         .features-grid {
@@ -90,6 +83,7 @@
             gap: 25px;
             margin: 50px 0;
         }
+
         .feature-card {
             background: #1f2937;
             padding: 30px;
@@ -98,8 +92,17 @@
             border: 1px solid #374151;
             transition: 0.3s;
         }
-        .feature-card:hover { transform: translateY(-10px); border-color: #6366f1; }
-        .feature-icon { font-size: 40px; color: #6366f1; margin-bottom: 20px; }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: #6366f1;
+        }
+
+        .feature-icon {
+            font-size: 40px;
+            color: #6366f1;
+            margin-bottom: 20px;
+        }
 
         /* --- NEW: FAQ ACCORDION --- */
         .faq-item {
@@ -129,17 +132,30 @@
 
         /* Responsif */
         @media (max-width: 768px) {
-            .hero-section { flex-direction: column; text-align: center; }
-            .hero-text { max-width: 100%; margin-bottom: 40px; }
-            .hero-image { width: 100%; }
-            .features-grid { grid-template-columns: 1fr; }
+            .hero-section {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .hero-text {
+                max-width: 100%;
+                margin-bottom: 40px;
+            }
+
+            .hero-image {
+                width: 100%;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         
     </style>
 </head>
-<body class="dashboard-body">
 
+<body class="dashboard-body">
     <nav class="navbar">
         <div class="nav-container">
             <div class="logo">
@@ -151,10 +167,35 @@
                 <li><a href="#produk">Produk</a></li>
                 <li><a href="#fitur">Keunggulan</a></li>
             </ul>
-            <div class="nav-actions">
-                <a href="login" class="btn-nav-login" style="background: transparent; color: #fff; border: 1px solid #374151;">Masuk</a>
-                <a href="register" class="btn-nav-login" style="background: #6366f1; color: white; border: none;">Daftar</a>
-            </div>
+            @guest
+                <div class="nav-actions">
+                    <a href="{{ route('login') }}" class="btn-nav-login"
+                        style="background: transparent; color: #fff; border: 1px solid #374151;">Masuk</a>
+                    <a href="{{ route('register') }}" class="btn-nav-login"
+                        style="background: #6366f1; color: white; border: none;">Daftar</a>
+                </div>
+            @endguest
+            @auth
+                @php
+                    $dashboardRoute =
+                        Auth::user()->isAdmin() ? route('admin.dashboard') :
+                        (Auth::user()->isSeller() ? route('seller.dashboard') :
+                            route('member.dashboard'));
+                @endphp
+                <div class="nav-actions">
+                    <a href="{{ $dashboardRoute }}" class="btn-nav-login"
+                        style="background: transparent; color: #fff; border: 1px solid #374151;">
+                        Dashboard
+                    </a>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <a href="#" onclick="event.preventDefault(); this.closest('form').submit();" class="btn-nav-login"
+                            style="color: #f87171;">
+                            Logout
+                        </a>
+                    </form>
+                </div>
+            @endauth
         </div>
     </nav>
 
@@ -188,11 +229,15 @@
 
             <div class="hero-text">
                 <h1>Upgrade Setup,<br>Level Up Skill.</h1>
-                <p>Temukan laptop gaming, peripheral, dan komponen PC terbaik dengan harga setara bitcoin. Garansi resmi, pengiriman aman ke seluruh FILKOM.</p>
+                <p>Temukan laptop gaming, peripheral, dan komponen PC terbaik dengan harga yang masuk akal. Garansi resmi, pengiriman aman ke seluruh Indonesia.</p>
                 
                 <div style="display: flex; gap: 15px;">
-                    <a href="login" class="submit-btn" style="width: auto; padding: 15px 40px; background: #6366f1; color: white; text-decoration: none;">Belanja Sekarang</a>
-                    <a href="#produk" class="submit-btn" style="width: auto; padding: 15px 30px; background: #374151; color: white; text-decoration: none;">Lihat Katalog</a>
+                    <a href="login" class="submit-btn"
+                        style="width: auto; padding: 15px 40px; background: #6366f1; color: white; text-decoration: none;">Belanja
+                        Sekarang</a>
+                    <a href="#produk" class="submit-btn"
+                        style="width: auto; padding: 15px 30px; background: #374151; color: white; text-decoration: none;">Lihat
+                        Katalog</a>
                 </div>
             </div>
 
@@ -211,38 +256,44 @@
                 <div class="feature-card">
                     <div class="feature-icon"><i class="fa-solid fa-medal"></i></div>
                     <h4 style="color: white; margin-bottom: 10px;">Produk 100% Original</h4>
-                    <p style="font-size: 13px; color: #9ca3af;">Jaminan uang kembali jika barang palsu. Garansi resmi distributor Indonesia.</p>
+                    <p style="font-size: 13px; color: #9ca3af;">Jaminan uang kembali jika barang palsu. Garansi resmi
+                        distributor Indonesia.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon"><i class="fa-solid fa-truck-fast"></i></div>
                     <h4 style="color: white; margin-bottom: 10px;">Pengiriman Kilat</h4>
-                    <p style="font-size: 13px; color: #9ca3af;">Packing kayu & bubble wrap tebal. Aman sampai tujuan ke seluruh pelosok.</p>
+                    <p style="font-size: 13px; color: #9ca3af;">Packing kayu & bubble wrap tebal. Aman sampai tujuan ke
+                        seluruh pelosok.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon"><i class="fa-solid fa-headset"></i></div>
                     <h4 style="color: white; margin-bottom: 10px;">Support 24/7</h4>
-                    <p style="font-size: 13px; color: #9ca3af;">Bingung pilih spek? Konsultasikan kebutuhanmu dengan teknisi kami.</p>
+                    <p style="font-size: 13px; color: #9ca3af;">Bingung pilih spek? Konsultasikan kebutuhanmu dengan
+                        teknisi kami.</p>
                 </div>
             </div>
         </section>
 
         <section id="produk">
-            <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+            <div class="section-header"
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
                 <h3>Rekomendasi Minggu Ini</h3>
-                <a href="login" style="color: #6366f1; text-decoration: none; font-size: 14px;">Lihat Semua &rarr;</a>
+                <a href="storeDashboard.html" style="color: #6366f1; text-decoration: none; font-size: 14px;">Lihat Semua &rarr;</a>
             </div>
-            <div class="product-grid" style="grid-template-columns: repeat(4, 1fr);"> 
+            <div class="product-grid" style="grid-template-columns: repeat(4, 1fr);">
                 @foreach ($latestProducts as $product)
-                <div class="card product-card">
-                    <div class="product-img">
-                        <img src={{asset('ImageSource/' . $product->slug . '.png')}} style="width: 100%; height: 100%; object-fit: contain;">
+                    <div class="card product-card">
+                        <div class="product-img">
+                            <img src={{asset('ImageSource/' . $product->slug . '.png')}}
+                                style="width: 100%; height: 100%; object-fit: contain;">
+                        </div>
+                        <div class="product-info">
+                            <h4>{{ $product->name }}</h4>
+                            <span class="category-tag">{{ $product->productCategory->name }}</span>
+                            <div class="price-row"><span class="price">Rp
+                                    {{ number_format($product->price, 0, ',', '.') }}.000</span></div>
+                        </div>
                     </div>
-                    <div class="product-info">
-                        <h4>{{ $product->name }}</h4>
-                        <span class="category-tag">{{ $product->productCategory->name }}</span>
-                        <div class="price-row"><span class="price">Rp {{ number_format($product->price, 0, ',', '.') }}</span></div>
-                    </div>
-                </div>   
                 @endforeach
             </div>
         </section>
@@ -352,4 +403,5 @@
     </div>
 
 </body>
+
 </html>
