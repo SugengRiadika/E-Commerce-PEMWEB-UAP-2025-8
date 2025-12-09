@@ -86,6 +86,7 @@
                             <th>Pemilik (User)</th>
                             <th>No Handphone</th>
                             <th>Kota</th>
+                            <th>Tindakan</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -99,6 +100,14 @@
                             <td>{{ $store->user->name }}</td>
                             <td>{{ $store->phone }}</td>
                             <td>{{ $store->city }}</td>
+                            <td>
+                                <form action="{{ route('admin.stores.delete', $store->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn-action btn-reject" title="Delete" type="submit"
+                                            onclick="return confirm('Delete Toko ini?')"><i
+                                            class="fa-solid fa-xmark"></i> hapus</button>
+                                        </form>
                         </tr>
                         @endforeach
                     </tbody>
