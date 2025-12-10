@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Isi Saldo - Hardware_JosJis</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('style.css') }}">
 
@@ -14,14 +16,18 @@
             display: grid;
             gap: 25px;
         }
+
         @media (max-width: 768px) {
-            .topup-grid { grid-template-columns: 1fr; }
+            .topup-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
+
 <body class="dashboard-body">
 
-  <nav class="navbar">
+    <nav class="navbar">
         <div class="nav-container">
             <div class="logo">
                 <img src="{{ asset('ImageSource/josjis_logo.png') }}" alt="Logo josjis">
@@ -56,9 +62,9 @@
 
 
     <div class="container" style="display: block; max-width: 1000px; padding-top: 20px;">
-        
+
         <main class="content-center">
-            
+
             <div class="section-header page-title">
                 <h3>Isi Saldo Wallet</h3>
             </div>
@@ -74,13 +80,15 @@
             </div>
 
             @if(session('success'))
-                <div class="alert" style="background: rgba(74, 222, 128, 0.1); border: 1px solid #4ade80; color: #4ade80; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                <div class="alert"
+                    style="background: rgba(74, 222, 128, 0.1); border: 1px solid #4ade80; color: #4ade80; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
                     <i class="fa-solid fa-check-circle"></i> {{ session('success') }}
                 </div>
             @endif
 
             @if($errors->any())
-                <div class="alert" style="background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; color: #ef4444; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                <div class="alert"
+                    style="background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; color: #ef4444; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
                     <ul style="margin: 0; padding-left: 20px;">
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
@@ -90,7 +98,7 @@
             @endif
 
             <div class="topup-grid">
-                
+
                 <div class="card">
                     <div class="card-header-sm">
                         <h3>Pilih Nominal Topup</h3>
@@ -98,19 +106,26 @@
 
                     <form action="{{ route('member.topup.process') }}" method="POST" id="topupForm">
                         @csrf
-                        
+
                         <div class="nominal-grid">
-                            <button type="button" class="nominal-btn" onclick="setNominal(20000)">Rp 20.000 <span>IDR</span></button>
-                            <button type="button" class="nominal-btn" onclick="setNominal(50000)">Rp 50.000 <span>IDR</span></button>
-                            <button type="button" class="nominal-btn" onclick="setNominal(100000)">Rp 100.000 <span>IDR</span></button>
-                            <button type="button" class="nominal-btn" onclick="setNominal(200000)">Rp 200.000 <span>IDR</span></button>
-                            <button type="button" class="nominal-btn" onclick="setNominal(500000)">Rp 500.000 <span>IDR</span></button>
-                            <button type="button" class="nominal-btn" onclick="setNominal(1000000)">Rp 1.000.000 <span>IDR</span></button>
+                            <button type="button" class="nominal-btn" onclick="setNominal(20000)">Rp 20.000
+                                <span>IDR</span></button>
+                            <button type="button" class="nominal-btn" onclick="setNominal(50000)">Rp 50.000
+                                <span>IDR</span></button>
+                            <button type="button" class="nominal-btn" onclick="setNominal(100000)">Rp 100.000
+                                <span>IDR</span></button>
+                            <button type="button" class="nominal-btn" onclick="setNominal(200000)">Rp 200.000
+                                <span>IDR</span></button>
+                            <button type="button" class="nominal-btn" onclick="setNominal(500000)">Rp 500.000
+                                <span>IDR</span></button>
+                            <button type="button" class="nominal-btn" onclick="setNominal(1000000)">Rp 1.000.000
+                                <span>IDR</span></button>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label">Atau Masukkan Nominal Lain (Min. Rp 10.000)</label>
-                            <input type="number" name="amount" id="amountInput" class="form-input" placeholder="Contoh: 75000" min="10000" required>
+                            <input type="number" name="amount" id="amountInput" class="form-input"
+                                placeholder="Contoh: 75000" min="10000" required>
                         </div>
 
                         <div class="form-group">
@@ -121,36 +136,35 @@
                                 <option value="mandiri">Transfer Virtual Account Mandiri</option>
                                 <option value="bri">Transfer Virtual Account BRI</option>
                                 <option value="bni">Transfer Virtual Account BNI</option>
-                                <option value="gopay">QRIS (GoPay/OVO/Dana)</option>
                             </select>
                         </div>
 
-                        <button type="submit" class="submit-btn" style="background: #6366f1; color: white; margin-top: 10px;">
+                        <button type="submit" class="submit-btn"
+                            style="background: #6366f1; color: white; margin-top: 10px;">
                             <i class="fa-solid fa-paper-plane"></i> Buat Pesanan Topup
                         </button>
                     </form>
 
-                    @if(isset($pendingTopup)) 
-                        <div class="va-card" style="margin-top: 30px;">
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <span style="font-size: 13px; color: #c7d2fe;">Menunggu Pembayaran</span>
-                                <span class="badge bg-pending" style="background: #fff; color: #f59e0b;">Pending</span>
-                            </div>
-                            
-                            <h4 style="margin-top: 10px; color: #fff;">{{ strtoupper($pendingTopup->payment_method) }} Virtual Account</h4>
-                            
-                            <div class="va-number">{{ $pendingTopup->payment_code ?? '8801 0000 ...' }}</div>
-                            
-                            <p style="font-size: 12px; color: #c7d2fe; text-align: center;">
-                                Silakan transfer nominal <strong>Rp {{ number_format($pendingTopup->amount, 0, ',', '.') }}</strong> 
-                                sebelum <strong>{{ $pendingTopup->created_at->addDay()->format('d M H:i') }} WIB</strong>.
-                            </p>
+                    <div class="va-card" style="margin-top: 30px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 13px; color: #c7d2fe;">Menunggu Pembayaran</span>
+                            <span class="badge bg-pending" style="background: #fff; color: #f59e0b;">Pending</span>
                         </div>
-                    @endif
+
+                        <h4 style="margin-top: 10px; color: #fff;"> JosJis Virtual Account</h4>
+
+                        <div class="va-number">{{ preg_replace('/(.{4})/', '$1 ', $transactions->first()->id) }}
+                        </div>
+
+                        <p style="font-size: 12px; color: #c7d2fe; text-align: center;">
+                            Silakan transfer nominal<strong> Rp </strong>
+                        </p>
+                    </div>
 
                     <div class="card support-card">
                         <h3><i class="fa-solid fa-circle-info"></i> Cara Topup</h3>
-                        <ol style="padding-left: 20px; font-size: 12px; color: #d1d5db; line-height: 1.6; margin-top: 10px;">
+                        <ol
+                            style="padding-left: 20px; font-size: 12px; color: #d1d5db; line-height: 1.6; margin-top: 10px;">
                             <li>Pilih nominal instan atau ketik manual.</li>
                             <li>Pilih metode pembayaran (Transfer Bank / E-Wallet).</li>
                             <li>Klik tombol "Buat Pesanan".</li>
@@ -161,30 +175,46 @@
                     </div>
                 </div>
 
-                
+
 
             </div>
 
         </main>
-        
+
     </div>
 
     <script>
+        // Update realtime dari input nominal
+        document.getElementById('amountInput').addEventListener('input', function () {
+            let value = this.value;
+
+            // Format angka jadi format Indonesia (10.000)
+            let formatted = value ? parseInt(value).toLocaleString('id-ID') : "0";
+
+            // Update paragraf nominal
+            document.querySelector('p strong').innerText = " Rp " + formatted + " ";
+        });
+
+        // Fungsi setNominal tetap bisa dipakai
         function setNominal(amount) {
-            // Set nilai input
             document.getElementById('amountInput').value = amount;
-            
-            // Visual feedback tombol aktif
+
+            // Format Indonesia
+            let formatted = parseInt(amount).toLocaleString('id-ID');
+
+            // Update paragraf nominal
+            document.querySelector('p strong').innerText = " Rp " + formatted + " ";
+
+            // Visual button (jika ada tombol nominal)
             let buttons = document.querySelectorAll('.nominal-btn');
             buttons.forEach(btn => {
                 btn.classList.remove('selected');
-                // Cek jika teks tombol mengandung nominal yg dipilih (opsional logic sederhana)
-                if(btn.innerText.includes(amount.toLocaleString('id-ID').split(',')[0])) {
+                if (btn.innerText.includes(formatted)) {
                     btn.classList.add('selected');
                 }
             });
         }
     </script>
-
 </body>
+
 </html>

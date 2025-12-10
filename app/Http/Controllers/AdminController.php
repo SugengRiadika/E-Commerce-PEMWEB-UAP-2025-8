@@ -112,8 +112,8 @@ class AdminController extends Controller
         $store = Store::findOrFail($id);
 
         // Jika user punya toko → hapus juga
-        if ($store->user) {
-            $store->user->delete();
+        if ($store) {
+            $store->delete();
         }
 
         $store->delete();

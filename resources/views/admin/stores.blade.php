@@ -29,6 +29,18 @@
             </div>
         </div>
     </nav>
+@if(session('success'))
+    <div class="alert alert-success" id="success-alert">
+        <div style="display: flex; align-items: center;">
+            <i class="fa-solid fa-circle-check alert-icon"></i>
+            <span>{{ session('success') }}</span>
+        </div>
+        
+        <button type="button" class="btn-close-alert" onclick="this.parentElement.style.display='none';">
+            &times;
+        </button>
+    </div>
+@endif
 
     <div class="admin-container">
         <aside class="sidebar-left">
@@ -64,11 +76,11 @@
                 </ul>
             </div>
         </aside>
-
-        <main class="content-center">
-
-            <div class="card">
-                
+{{-- Alert sukses --}}
+<main class="content-center">
+    
+    <div class="card">
+        
                 <div class="card-header-sm" style="display: flex; justify-content: space-between; align-items: center;">
                     <h3>Daftar Semua Toko</h3>
 

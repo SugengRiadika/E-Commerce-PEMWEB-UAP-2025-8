@@ -696,6 +696,57 @@ body.dashboard-body {
     transform: scale(1.1);
 }
 
+/* Alert Base Styles */
+.alert {
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 8px; /* Sudut melengkung modern */
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    animation: fadeIn 0.5s ease-in-out; /* Animasi muncul halus */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Bayangan tipis */
+}
+
+/* Alert Success Specifics */
+.alert-success {
+    color: #0f5132;             /* Teks hijau gelap */
+    background-color: #d1e7dd;  /* Background hijau muda lembut */
+    border-color: #badbcc;      /* Border hijau */
+}
+
+/* (Opsional) Icon di dalam alert */
+.alert-icon {
+    margin-right: 10px;
+    font-size: 16px;
+}
+
+/* Tombol Close (X) */
+.btn-close-alert {
+    background: transparent;
+    border: none;
+    font-size: 18px;
+    line-height: 1;
+    color: inherit;
+    opacity: 0.5;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.btn-close-alert:hover {
+    opacity: 1;
+}
+
+/* Animasi Fade In */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 .ad-banner {
     background-color: #111827;
     color: white;
