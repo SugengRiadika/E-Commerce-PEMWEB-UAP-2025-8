@@ -68,9 +68,21 @@ class MemberController extends Controller
         $transactions = Transaction::where('buyer_id', Auth::id())->get();
         return view('member.topup', compact('transactions'));
     }
-    public function createTopup()
+    public function updateTopup(Request $request)
     {
-        return view('member.topupprocess');
+    $transactions = Transaction::where('buyer_id', Auth::id())->first();
+
+    $request->validate([
+        'grand_total' => 'required|numeric|min:1000',
+    ]);
+
+    $grandTotal = $request->grand_total / 1000;
+
+    // Update saldo
+    $transactions->update([
+        'grand_total' => $grandTotal + $transactions->grand_total,
+    ]);
+    return redirect()->route('member.topup')->with('success', 'Anda berhasil TopUp!');
     }
 
     public function postStore(Request $request)
@@ -110,9 +122,10 @@ class MemberController extends Controller
     }
     public function checkout(Request $request, $id)
     {
+        $transaction = Transaction::where('buyer_id', Auth::id())->get()->first();
         $inputQuantity = $request->query('quantity');
         $product = Product::with(['store', 'productCategory'])->findOrFail($id);
-        return view('member.checkout', compact('product', 'inputQuantity'));
+        return view('member.checkout', compact('product', 'inputQuantity', 'transaction'));
     }
 
     public function checkoutProduct(Request $request, $id)

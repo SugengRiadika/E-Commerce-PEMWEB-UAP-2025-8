@@ -30,8 +30,9 @@
 
                 <div class="search-box">
                     <form action="{{ route('member.dashboard') }}" method="GET">
-                    <i class="fa-solid fa-search"></i><input type="text" name="search" placeholder="Cari produk..."
-                        style="width: 200px;" value=""></form>
+                        <i class="fa-solid fa-search"></i><input type="text" name="search" placeholder="Cari produk..."
+                            style="width: 200px;" value="">
+                    </form>
                 </div>
 
                 <div class="info-item" style="border:none; margin:0; padding:0; text-align:right;">
@@ -82,32 +83,33 @@
                 @if($products->count() == 0)
                     <p>Tidak ada produk di kategori ini.</p>
                 @else
-                        <h3>Produk Category ' {{ $products->first()->productCategory->name }} '</h3>
-                    </div>
-                    <div class="product-grid">
-                        @foreach($products as $product)
-                            <div class="card product-card">
-                                <a href="{{ route('member.product', $product->id) }}"
-                                            style="text-decoration: none; color: inherit;">
-                                <div class="product-img"><img src="{{ asset('ImageSource/' . $product->slug . '.png') }}"
-                                        class="product-img"></div>
-                                <div class="product-info">
-                                    <h4>{{ $product->name }}</a></h4>
-                                    <span class="category-tag">{{ $product->productCategory->name}}</span>
-                                    <div class="price-row"><span class="price">Rp
-                                            {{ number_format($product->price, 0, ',', '.') . '.000' }}</span><a
-                                            href="{{ route('member.product', $product->id) }}" class="btn-icon" style="text-decoration:none;"><i
-                                                class="fa-solid fa-chevron-right"></i></a></div>
-                                </div>
+                                <h3>Produk Category ' {{ $products->first()->productCategory->name }} '</h3>
                             </div>
-                            </a>
-                        @endforeach
+                            <div class="product-grid">
+                                @foreach($products as $product)
+                                        <div class="card product-card">
+                                            <a href="{{ route('member.product', $product->id) }}"
+                                                style="text-decoration: none; color: inherit;">
+                                                <div class="product-img"><img src="{{ asset('ImageSource/' . $product->slug . '.png') }}"
+                                                        class="product-img"></div>
+                                                <div class="product-info">
+                                                    <h4>{{ $product->name }}
+                                            </a></h4>
+                                            <span class="category-tag">{{ $product->productCategory->name}}</span>
+                                            <div class="price-row"><span class="price">Rp
+                                                    {{ number_format($product->price, 0, ',', '.') . '.000' }}</span><a
+                                                    href="{{ route('member.product', $product->id) }}" class="btn-icon"
+                                                    style="text-decoration:none;"><i class="fa-solid fa-chevron-right"></i></a></div>
+                                        </div>
+                                    </div>
+                                    </a>
+                                @endforeach
                     </div>
                     <div class="mt-4">
                         {{ $products->links() }}
                     </div>
-            @endif
-        </main>
+                @endif
+    </main>
 
         <aside class="sidebar-right">
             <div class="card location-card">
@@ -116,7 +118,7 @@
                 </div>
                 <ul class="location-list">
                     @foreach($latestStores as $store)
-                        <li><a href="{{route ('member.dstore',$store->id)}}" style="text-decoration: none; color: inherit;"><i
+                        <li><a href="store/{{ $store->id}}" style="text-decoration: none; color: inherit;"><i
                                     class="fa-solid fa-store"></i> <span>{{ $store->name }}</span></a>
                         </li>
                     @endforeach

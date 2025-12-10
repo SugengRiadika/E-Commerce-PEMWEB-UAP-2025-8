@@ -340,11 +340,17 @@
                                 max="{{ $product->stock }}">
                             <button type="button" class="qty-btn" onclick="incrementQty()">+</button>
                     </div>
+                    @if ($product->stock > 0)
                     <a id="buyNowBtn" href="#">
     <button class="submit-btn" style="flex:1; background:#6366f1;">
         <i class="fa-solid fa-money-bill-wave"></i> Beli Sekarang
     </button>
 </a>
+                    @else
+    <button class="submit-btn" style="flex:1; background:#9ca3af;" disabled>
+        <i class="fa-solid fa-money-bill-wave"></i> Stock Habis
+    </button>
+                    @endif
                 </div>
             </form>
 

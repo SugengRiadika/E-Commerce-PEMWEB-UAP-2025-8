@@ -72,7 +72,8 @@
             <div class="balance-header">
                 <div>
                     <div class="balance-label">Saldo Aktif Anda</div>
-                    <div class="balance-amount">Rp {{ number_format(Auth::user()->balance ?? 0, 0, ',', '.') }}</div>
+                    <div class="balance-amount">Rp
+                        {{ number_format($transactions->first()->grand_total, 0, ',', '.') }}.000</div>
                 </div>
                 <div style="font-size: 40px; color: #374151;">
                     <i class="fa-solid fa-wallet"></i>
@@ -106,7 +107,7 @@
 
                     <form action="{{ route('member.topup.process') }}" method="POST" id="topupForm">
                         @csrf
-
+                        @method('PUT')
                         <div class="nominal-grid">
                             <button type="button" class="nominal-btn" onclick="setNominal(20000)">Rp 20.000
                                 <span>IDR</span></button>
@@ -124,7 +125,7 @@
 
                         <div class="form-group">
                             <label class="form-label">Atau Masukkan Nominal Lain (Min. Rp 10.000)</label>
-                            <input type="number" name="amount" id="amountInput" class="form-input"
+                            <input type="number" name="grand_total" id="amountInput" class="form-input"
                                 placeholder="Contoh: 75000" min="10000" required>
                         </div>
 

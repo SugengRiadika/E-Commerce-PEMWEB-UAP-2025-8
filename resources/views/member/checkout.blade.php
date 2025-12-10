@@ -253,14 +253,14 @@
 
                         <hr style="border: 0; border-top: 1px dashed #374151; margin: 20px 0;">
                         <div class="form-group">
-                            @if (($product->price*$inputQuantity)+(2) > 2002)
+                            @if ((($product->price*$inputQuantity)+(2)) > $transaction->grand_total)
                             <label class="form-label">Metode Pembayaran</label>
                             <div class="payment-method">
                                 <label class="pay-option active" onclick="selectPayment(this)">
                                     <i class="fa-solid fa-building-columns"
                                     style="font-size: 20px; color: white; display: block; margin-bottom: 5px;"></i>
                                     <span style="font-size: 12px; color: #d1d5db;">Virtual Account</span><br>
-                                    <span style="font-size: 12px; color: #f87171;">Saldo: Rp 124151</span>
+                                    <span style="font-size: 12px; color: #f87171;">Saldo: Rp {{ number_format($transaction->grand_total, 0, ',', '.') }}.000</span>
                                     <p style="font-size: 12px; color: #f87171; text-align: center; margin-bottom: 10px;">
                                         Saldo Anda tidak mencukupi untuk melakukan pembayaran ini.
                                         
@@ -280,7 +280,7 @@
                                     <i class="fa-solid fa-building-columns"
                                     style="font-size: 20px; color: white; display: block; margin-bottom: 5px;"></i>
                                     <span style="font-size: 12px; color: #d1d5db;">Virtual Account</span><br>
-                                    <span style="font-size: 12px; color: #d1d5db;">Saldo: Rp 124151</span>
+                                    <span style="font-size: 12px; color: #d1d5db;">Saldo: Rp {{ number_format($transaction->grand_total, 0, ',', '.') }}.000</span>
                                 <button type="submit" class="submit-btn"
                             style="background: #6366f1; width: 100%; margin-top: 10px;">
                             <i class="fa-solid fa-lock"></i> Bayar Sekarang
