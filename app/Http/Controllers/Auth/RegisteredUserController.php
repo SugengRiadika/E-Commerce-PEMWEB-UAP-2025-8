@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Transaction;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -30,9 +31,10 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name'     => 'required',
-            'email'    => 'required|email|unique:users',
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
+            'phone_number' => 'required|max:10|min:10|unique:users',
         ]);
 
         $user = User::create([
@@ -44,6 +46,26 @@ class RegisteredUserController extends Controller
             'phone_number' => $request->phone_number ?? null,
         ]);
 
+        $paymentId = '8880' . $request->phone_number . rand(1000, 9999);
+
+        $transaction = Transaction::create([
+            'id' => $paymentId,
+            'buyer_id' => $user->id,
+            'code' => 'TRX' . strtoupper(uniqid()),
+            'store_id' => null,
+            'total_amount' => 0,
+            'payment_status' => 'unpaid',
+            'address' => '-',
+            'address_id' => '-',
+            'city' => '-',
+            'postal_code' => '-',
+            'shipping' => '-',
+            'shipping_type' => '-',
+            'shipping_cost' => 0,
+            'tracking_number' => null,
+            'tax' => 0,
+            'grand_total' => 0,
+        ]);
         event(new Registered($user));
 
         return redirect()->route('login')->with('success', 'Akun berhasil dibuat.');

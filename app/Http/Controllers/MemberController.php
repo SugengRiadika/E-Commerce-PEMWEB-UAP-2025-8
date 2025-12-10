@@ -65,7 +65,8 @@ class MemberController extends Controller
     }
     public function getTopup()
     {
-        return view('member.topup');
+        $transactions = Transaction::where('buyer_id', Auth::id())->get();
+        return view('member.topup', compact('transactions'));
     }
     public function createTopup()
     {
