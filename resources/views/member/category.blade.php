@@ -116,7 +116,7 @@
                 </div>
                 <ul class="location-list">
                     @foreach($latestStores as $store)
-                        <li><a href="store/{{ $store->id}}" style="text-decoration: none; color: inherit;"><i
+                        <li><a href="{{route ('member.dstore',$store->id)}}" style="text-decoration: none; color: inherit;"><i
                                     class="fa-solid fa-store"></i> <span>{{ $store->name }}</span></a>
                         </li>
                     @endforeach

@@ -818,6 +818,12 @@ body.dashboard-body {
     margin-bottom: 10px;
 }
 
+.support-card p {
+    font-size: 13px;
+    color: #c7d2fe;
+    line-height: 1.5;
+    text-align: center;
+}
 
 /* Transaction & History */
 .page-title {

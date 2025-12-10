@@ -51,14 +51,8 @@ Route::middleware(['auth', 'member.only'])->group(function () {
     Route::post('/member/topup', [MemberController::class, 'createTopup'])->name('member.topup.process');
     Route::get('/member/store', [MemberController::class, 'getStore'])->name('member.store');
     Route::post('/member/store', [MemberController::class, 'postStore'])->name('member.store.save');
-    Route::middleware(['auth', 'member.only'])->group(function () {
-    
-    // ... route lain milik member ...
-
-    // Route untuk melihat halaman detail toko (dstore)
-    // URL nanti menjadi: /member/dstore/1, /member/dstore/2, dst.
     Route::get('/member/dstore/{id}', [MemberController::class, 'showStore'])->name('member.dstore');
-
+    Route::middleware(['auth', 'member.only'])->group(function () {
 });
 });
 

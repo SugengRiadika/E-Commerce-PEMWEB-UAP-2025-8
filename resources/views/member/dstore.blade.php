@@ -51,24 +51,47 @@
 
     <div class="container">
         <aside class="sidebar-left">
-            <div class="card card-sidebar">
-                <div class="card-header-sm">
-                    <h3>Etalase Toko</h3>
-                </div>
-                <ul class="category-list etalase-list">
-                    <li><a href="#" style="font-weight: bold; color: #fff;">Semua Produk <span
-                                class="count-badge">{{ $totalProducts }}</span></a></li>
-                </ul>
-            </div>
-            <div class="card info-card">
-                <div class="info-item">
+    <div class="card card-sidebar">
+        <div class="card-header-sm">
+            <h3>Etalase Toko</h3>
+        </div>
+        <ul class="category-list etalase-list">
+            {{-- Link Semua Produk --}}
+            <li>
+                <a href="{{ route('member.dstore', $store->id) }}" 
+                   class="{{ !request('category') ? 'active-category' : '' }}" 
+                       style="color: #ffffffff; display: flex; justify-content: space-between;">
+                    Semua Produk 
+                    <span class="count-badge">{{ $totalProducts }}</span>
+                </a>
+            </li>
+
+            {{-- Looping Kategori dari Controller --}}
+            @foreach($categories as $cat)
+                <li>
+                    <a href="{{ route('member.dstore', $store->id) }}?category={{ $cat->id }}"
+                       class="{{ request('category') == $cat->id ? 'active-category' : '' }}"
+                       style="color: #ffffffff; display: flex; justify-content: space-between;">
+                        {{ $cat->name }}
+                        <span class="count-badge">
+                            {{ $cat->products_count }}
+                        </span>
+                    </a>
+                </li>
+            @endforeach
+        </ul>
+    </div>
+    
+    {{-- Card Jam Operasional tetap sama --}}
+    <div class="card info-card">
+       <div class="info-item">
                     <small>Jam Operasional</small>
                     <div style="font-size: 13px; color: #fff; margin-top: 5px;">
                         <i class="fa-regular fa-clock" style="color: #6366f1;"></i> 09:00 - 17:00 WIB
                     </div>
                 </div>
-            </div>
-        </aside>
+    </div>
+</aside>
 
         <main class="content-center">
             <div class="store-header-card">
@@ -99,45 +122,80 @@
                 </div>
             </div>
 
-            <div class="store-tabs">
-                <div class="tab-item active">Produk</div>
-                <div class="tab-item">Ulasan</div>
-                <div class="tab-item">Tentang Toko</div>
-            </div>
+        
 
-            <div class="section-header" style="margin-top: 20px;">
-                <h3>Daftar Produk</h3>
-            </div>
+            <div class="section-header" style="margin-top: 20px; display:flex; justify-content:space-between; align-items:center;">
+        <h3>
+            @if(request('category'))
+                {{-- Cari nama kategori berdasarkan ID di URL --}}
+                @php 
+                    $activeCat = $categories->firstWhere('id', request('category')); 
+                @endphp
+                Kategori: {{ $activeCat ? $activeCat->name : 'Produk' }}
+            @else
+                Semua Produk
+            @endif
+        </h3>
+        
+        @if(request('category'))
+            <a href="{{ route('member.dstore', $store->id) }}" style="font-size:12px; color:#ef4444; text-decoration:none;">
+                <i class="fa-solid fa-times"></i> Hapus Filter
+            </a>
+        @endif
+    </div>
 
-            <div class="product-grid">
-                @forelse($store->products as $product)
-                    <div class="card product-card">
-                        <a href="{{ route('member.product', $product->id) }}" style="color: inherit;text-decoration:none;">
-                            <div class="product-img"><img src="{{ asset('ImageSource/' . $product->slug . '.png') }}"
-                                    class="product-img"></div>
-                            <div class="product-info">
-                                <h4>{{ $product->name }}</h4>
-                                <span class="category-tag">{{ $product->productCategory->name}}</span>
-                                <div class="price-row"><span class="price">Rp
-                                        {{ number_format($product->price, 0, ',', '.') . '.000' }}</span><a
-                                        href="{{ route('member.product', $product->id) }}" class="btn-icon"
-                                        style="text-decoration:none;"><i class="fa-solid fa-chevron-right"></i></a></div>
-                            </div>
+    {{-- GRID PRODUK --}}
+    <div class="product-grid">
+        
+        {{-- PENTING: Gunakan variable $products, JANGAN $store->products --}}
+        @forelse($products as $product)
+            <div class="card product-card">
+                <a href="{{ route('member.product', $product->id) }}" style="color: inherit;text-decoration:none;">
+                    
+                    {{-- Gambar Produk --}}
+                    <div class="product-img">
+                        <img src="{{ asset('ImageSource/' . $product->slug . '.png') }}" 
+                             class="product-img" 
+                             alt="{{ $product->name }}">
                     </div>
-                    </a>
-                @empty
-                    <div class="col-span-full" style="grid-column: 1 / -1; text-align: center; color: white;">
-                        <p>Toko ini belum memiliki produk.</p>
+
+                    {{-- Info Produk --}}
+                    <div class="product-info">
+                        <h4>{{ $product->name }}</h4>
+                        <span class="category-tag">
+                            {{ $product->productCategory->name ?? 'Uncategorized' }}
+                        </span>
+                        
+                        <div class="price-row">
+                            <span class="price">
+                                Rp {{ number_format($product->price, 0, ',', '.') . '.000' }}
+                            </span>
+                            <span class="btn-icon">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </div>
                     </div>
-                @endforelse
+                </a>
             </div>
+        @empty
+            {{-- Tampilan JIKA KOSONG (Saat diklik kategori tapi tidak ada isinya) --}}
+            <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #9ca3af;">
+                <i class="fa-solid fa-box-open" style="font-size: 40px; margin-bottom: 10px;"></i>
+                <p>Belum ada produk di kategori ini.</p>
+                <a href="{{ route('member.dstore', $store->id) }}" class="btn-pill-white" style="margin-top:10px; display:inline-block; font-size:12px;">
+                    Lihat Semua Produk
+                </a>
+            </div>
+        @endforelse
+
+    </div>
         </main>
 
         <aside class="sidebar-right">
             <div class="card support-card">
                 <h3>Hubungi Penjual</h3>
                 <p>Ada pertanyaan seputar produk? Chat langsung dengan admin toko.</p>
-                <a href="https://wa.me/{{ $store->phone }}" target="_blank" class="btn-pill-white"
+                <a href="#" target="_blank" class="btn-pill-white"
                     style="width: 100%; margin-top: 10px; font-size: 13px; text-align:center; display:block; text-decoration:none; color:#000;">
                     <i class="fa-brands fa-whatsapp"></i> Chat WhatsApp
                 </a>

@@ -146,12 +146,38 @@ class MemberController extends Controller
 
 
     }
-    public function showStore($id)
-{
-    $store = Store::findOrFail($id); 
-    $categories = ProductCategory::all()->where('store_id', $store->$id);
-    $totalProducts = $store->products()->count(); 
+    public function showStore(Request $request, $id)
+    {
+        // 1. Ambil data toko
+        $store = Store::findOrFail($id);
 
-    return view('member.dstore', compact('store', 'totalProducts', 'categories'));
-}
+        // 2. Ambil Kategori yang HANYA dimiliki oleh produk di toko ini + Hitung jumlah produk per kategori
+        $categories = ProductCategory::whereHas('products', function($query) use ($id) {
+            $query->where('store_id', $id);
+        })->withCount(['products' => function($query) use ($id) {
+            $query->where('store_id', $id);
+        }])->get();
+
+        // 3. Siapkan query produk dasar (milik toko ini)
+        $productsQuery = Product::where('store_id', $id);
+
+        // 4. Cek apakah ada filter kategori dari sidebar?
+        if ($request->has('category')) {
+            $productsQuery->where('product_category_id', $request->query('category'));
+        }
+
+        // 5. Cek apakah ada pencarian nama produk?
+        if ($request->has('search')) {
+            $productsQuery->where('name', 'like', '%' . $request->query('search') . '%');
+        }
+
+        // 6. Eksekusi query produk
+        $products = $productsQuery->get();
+
+        // 7. Hitung total semua produk toko (untuk badge "Semua Produk")
+        $totalProducts = Product::where('store_id', $id)->count();
+
+        // Kirim semua variabel ke view 'member.dstore'
+        return view('member.dstore', compact('store', 'categories', 'products', 'totalProducts'));
+    }
 }
