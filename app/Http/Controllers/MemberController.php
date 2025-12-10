@@ -93,7 +93,7 @@ class MemberController extends Controller
         'is_verified' => 0,               
     ]);
 
-    return redirect()->route('member.dashboard')->with('success', 'Toko berhasil didaftarkan!');
+    return redirect()->route('member.store')->with('success', 'Toko berhasil didaftarkan!');
 }
     public function createProduct()
     {

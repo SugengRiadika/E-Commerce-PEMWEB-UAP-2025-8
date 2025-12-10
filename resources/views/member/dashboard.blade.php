@@ -82,22 +82,22 @@
                 <h3>Produk Terbaru loh yaa</h3>
             </div>
             <div class="product-grid">
-                @foreach($latestProducts as $product)
-                    <div class="card product-card">
+            @foreach($latestProducts as $product)
+            <div class="card product-card">
+                    <a href="{{ route('member.product', $product->id) }}" style="color: inherit;text-decoration:none;" > 
                         <div class="product-img"><img src="{{ asset('ImageSource/' . $product->slug . '.png') }}"
                                 class="product-img"></div>
                         <div class="product-info">
-                            <h4><a href="product/{{ $product->slug }}"
-                                    style="text-decoration: none; color: inherit;">{{ $product->name }}</a></h4>
+                            <h4>{{ $product->name }}</h4>
                             <span class="category-tag">{{ $product->productCategory->name}}</span>
                             <div class="price-row"><span class="price">Rp
                                     {{ number_format($product->price, 0, ',', '.') . '.000' }}</span><a
-                                    href="product/{{ $product->id }}" class="btn-icon" style="text-decoration:none;"><i
+                                    href="{{ route('member.product', $product->id) }}" class="btn-icon" style="text-decoration:none;"><i
                                         class="fa-solid fa-chevron-right"></i></a></div>
                         </div>
                     </div>
+                </a>
                 @endforeach
-
             </div>
         </main>
 

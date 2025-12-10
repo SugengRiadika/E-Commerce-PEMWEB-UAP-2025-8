@@ -263,8 +263,16 @@
                                     <span style="font-size: 12px; color: #f87171;">Saldo: Rp 124151</span>
                                     <p style="font-size: 12px; color: #f87171; text-align: center; margin-bottom: 10px;">
                                         Saldo Anda tidak mencukupi untuk melakukan pembayaran ini.
-                                    
+                                        
                                     </p>
+                                    <a onclick="handletopup()">
+                                        <button class="submit-btn"
+                                        style="background: #00c86eff; width: 100%; margin-top: 10px;">
+                                        <i class="fa-solid fa-lock"></i> TopUp Sekarang
+                                    </button>
+                                </a>
+                                </label>    
+                            </div>
                                     @else
                                     <label class="form-label">Metode Pembayaran</label>
                             <div class="payment-method">
@@ -296,6 +304,9 @@
     </div>
 
     <script>
+        function handletopup() {
+            window.location.href = "{{ route('member.topup') }}";
+        }
         function selectPayment(element) {
             document.querySelectorAll('.pay-option').forEach(el => el.classList.remove('active'));
             element.classList.add('active');

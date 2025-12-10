@@ -87,11 +87,12 @@
                     <div class="product-grid">
                         @foreach($products as $product)
                             <div class="card product-card">
+                                <a href="{{ route('member.product', $product->id) }}"
+                                            style="text-decoration: none; color: inherit;">
                                 <div class="product-img"><img src="{{ asset('ImageSource/' . $product->slug . '.png') }}"
                                         class="product-img"></div>
                                 <div class="product-info">
-                                    <h4><a href="product/{{ $product->slug }}"
-                                            style="text-decoration: none; color: inherit;">{{ $product->name }}</a></h4>
+                                    <h4>{{ $product->name }}</a></h4>
                                     <span class="category-tag">{{ $product->productCategory->name}}</span>
                                     <div class="price-row"><span class="price">Rp
                                             {{ number_format($product->price, 0, ',', '.') . '.000' }}</span><a
@@ -99,6 +100,7 @@
                                                 class="fa-solid fa-chevron-right"></i></a></div>
                                 </div>
                             </div>
+                            </a>
                         @endforeach
                     </div>
                     <div class="mt-4">
