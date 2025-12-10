@@ -167,23 +167,24 @@
         <div class="section-header page-title">
             <h3>Checkout Pesanan</h3>
         </div>
-
-        <form action="{{ route('member.checkout.proses') }}" method="POST">
+        
+        <form action="{{ route('member.checkout.proses', $product->id) }}" method="POST">
             @csrf
 
             <div class="checkout-grid">
-
+                
                 <div class="left-col">
-
+                    
                     <div class="card" style="margin-bottom: 30px;">
                         <div class="card-header-sm">
                             <h3><i class="fa-solid fa-location-dot" style="color: #6366f1; margin-right: 10px;"></i>
-                                Alamat Pengiriman</h3>
+                            Alamat Pengiriman</h3>
                         </div>
-
+                        
+                        <input type="text" name="stock" value="{{ $inputQuantity }}" hidden> 
                         <div class="form-group">
                             <label class="form-label">Nama Penerima</label>
-                            <input type="text" name="postal_code" placeholder="65144" class="form-input" value="{{ Auth::user()->name }}" disabled
+                            <input type="text" class="form-input" value="{{ Auth::user()->name }}" disabled
                                 required>
                         </div>
                         <div class="form-group">
@@ -195,7 +196,7 @@
                         <div class="form-group">
                             <label class="form-label">Kota</label>
                             <input type="text" name="city" class="form-input" value=""
-                                placeholder="08..." required>
+                                placeholder="Kab. Malang/ Malang ..." required>
                         </div>
 
                         <div class="form-group">
@@ -204,7 +205,7 @@
                                 placeholder="Jalan, Nomor Rumah, Kelurahan, Kecamatan..."
                                 required></textarea>
                         </div>
-                    </div>
+                    </div>  
 
                     <div class="card">
                         <div class="card-header-sm">
@@ -217,8 +218,9 @@
                                 class="cart-img">
                             <div class="item-details" style="flex: 1;">
                                 <h4>{{$product->name}}</h4>
-                                <p>Kuantitas: 1</p>
-                                <span class="item-price">Rp {{ number_format($product->price, 0, ',', '.') }}.000</span>
+                                <p>Kuantitas: {{$inputQuantity}}</p>
+                                <p>Harga Satuan: Rp {{ number_format($product->price, 0, ',', '.') }}.000</p>
+                                <span class="item-price">Rp {{ number_format($product->price*$inputQuantity, 0, ',', '.') }}.000</span>
                             </div>
                         </div>
                     </div>
@@ -250,7 +252,7 @@
                             <span>Total Tagihan</span>
                             <span style="color: #6366f1;">Rp {{ number_format(($product->price*$inputQuantity)+(2), 0, ',', '.') }}.000</span>
                         </div>
-
+                        
                         <hr style="border: 0; border-top: 1px dashed #374151; margin: 20px 0;">
                         <div class="form-group">
                             @if ((($product->price*$inputQuantity)+(2)) > $transaction->grand_total)
@@ -271,10 +273,10 @@
                                         <i class="fa-solid fa-lock"></i> TopUp Sekarang
                                     </button>
                                 </a>
-                                </label>    
+                            </label>    
                             </div>
-                                    @else
-                                    <label class="form-label">Metode Pembayaran</label>
+                            @else
+                            <label class="form-label">Metode Pembayaran</label>
                             <div class="payment-method">
                                 <label class="pay-option active">
                                     <i class="fa-solid fa-building-columns"
@@ -292,9 +294,6 @@
                             Dengan membayar, Anda menyetujui S&K Hardware_JosJis.
                         </p>
                         @endif
-                        
-                        
-
                     </div>
 
                 </div>

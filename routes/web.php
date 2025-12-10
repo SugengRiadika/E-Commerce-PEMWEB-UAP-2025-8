@@ -44,7 +44,7 @@ Route::middleware(['auth', 'member.only'])->group(function () {
     Route::get('/member/category/{slug}', [MemberController::class, 'sortbycategory'])->name('member.category');
     Route::get('/member/product/{id}', [MemberController::class, 'getProduct'])->name('member.product');
     Route::get('/member/checkout/{id}', [MemberController::class, 'checkout'])->name('member.checkout');
-    Route::put('/member', [MemberController::class, 'checkoutProduct'])->name('member.checkout.proses');
+    Route::post('/member/dashboard/{id}', [MemberController::class, 'checkoutProduct'])->name('member.checkout.proses');
     Route::get('/member/productcreate', [MemberController::class, 'createProduct'])->name('member.productcreate');
     Route::get('/member/transactionHistory', [MemberController::class, 'getTransaction'])->name('member.transactionHistory');
     Route::get('/member/topup', [MemberController::class, 'getTopup'])->name('member.topup');

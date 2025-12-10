@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\StoreBalance;
 use App\Models\Transaction;
 use App\Models\TransactionDetail;
 use App\Models\ProductCategory;
@@ -70,52 +71,53 @@ class MemberController extends Controller
     }
     public function updateTopup(Request $request)
     {
-    $transactions = Transaction::where('buyer_id', Auth::id())->first();
+        $transactions = Transaction::where('buyer_id', Auth::id())->first();
 
-    $request->validate([
-        'grand_total' => 'required|numeric|min:1000',
-    ]);
+        $request->validate([
+            'grand_total' => 'required|numeric|min:1000',
+        ]);
 
-    $grandTotal = $request->grand_total / 1000;
+        $grandTotal = $request->grand_total / 1000;
 
-    // Update saldo
-    $transactions->update([
-        'grand_total' => $grandTotal + $transactions->grand_total,
-    ]);
-    return redirect()->route('member.topup')->with('success', 'Anda berhasil TopUp!');
+        // Update saldo
+        $transactions->update([
+            'grand_total' => $grandTotal + $transactions->grand_total,
+        ]);
+        return redirect()->route('member.topup')->with('success', 'Anda berhasil TopUp!');
     }
 
     public function postStore(Request $request)
-{
-    $request->validate([
-        'name'        => 'required|string|max:255',
-        'about'       => 'required|string',
-        'logo'        => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        'phone'       => 'required|string|max:20',
-        'city'        => 'required|string|max:100',
-        'address'     => 'required|string',
-        'postal_code' => 'required|string|max:10',
-    ]);
-    $logoName = null;
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'about' => 'required|string',
+            'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'phone' => 'required|string|max:20',
+            'city' => 'required|string|max:100',
+            'address' => 'required|string',
+            'postal_code' => 'required|string|max:10',
+        ]);
+        $logoName = null;
         if ($request->hasFile('logo')) {
-        $file = $request->file('logo');
-        $logoName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-        $file->move(public_path('logo'), $logoName);    }
+            $file = $request->file('logo');
+            $logoName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('logo'), $logoName);
+        }
 
-    Store::create([
-        'user_id'     => auth()->id(),    // otomatis dari user login
-        'name'        => $request->name,
-        'about'       => $request->about,
-        'phone'       => $request->phone,
-        'city'        => $request->city,
-        'address'     => $request->address,
-        'logo'        => $logoName,
-        'postal_code' => $request->postal_code,
-        'is_verified' => 0,               
-    ]);
+        Store::create([
+            'user_id' => auth()->id(),    // otomatis dari user login
+            'name' => $request->name,
+            'about' => $request->about,
+            'phone' => $request->phone,
+            'city' => $request->city,
+            'address' => $request->address,
+            'logo' => $logoName,
+            'postal_code' => $request->postal_code,
+            'is_verified' => 0,
+        ]);
 
-    return redirect()->route('member.store')->with('success', 'Toko berhasil didaftarkan!');
-}
+        return redirect()->route('member.store')->with('success', 'Toko berhasil didaftarkan!');
+    }
     public function createProduct()
     {
         return view('member.productcreate');
@@ -130,26 +132,54 @@ class MemberController extends Controller
 
     public function checkoutProduct(Request $request, $id)
     {
-        $request->validate([
-            'quantity' => 'required|integer|min:1'
-        ]);
 
+        $buyerSaldo = Transaction::where('buyer_id', Auth::id())->first();
+
+        $request->validate([
+            'stock' => 'required|integer|min:1',
+            'postal_code' => 'required|string|max:10',
+            'address' => 'required|string',
+            'city' => 'required|string|max:100',
+        ]);
         $product = Product::findOrFail($id);
-        $quantity = $request->quantity;
-        $totalPrice = ($product->price * $request->quantity) + (2);
+        $quantity = $request->stock;
+        $totalPrice = ($product->price * $quantity) + 2;
         $transaction = Transaction::create([
-            'user_id' => Auth::id(),
+            'buyer_id' => Auth::id(),
             'store_id' => $product->store_id,
             'grand_total' => $totalPrice,
             'payment_status' => 'paid',
+            'address' => $request->address,
+            'city' => $request->city,
+            'postal_code' => $request->postal_code,
+            'code' => 'TRX' . strtoupper(uniqid()),
+            'total_amount' => 0,
+            'address_id' => '-',
+            'shipping' => '-',
+            'shipping_type' => '-',
+            'shipping_cost' => 0,
+            'tracking_number' => null,
+            'tax' => 2,
         ]);
+
         TransactionDetail::create([
             'transaction_id' => $transaction->id,
             'product_id' => $product->id,
-            'qty' => $request->quantity,
+            'qty' => $quantity,
             'subtotal' => $totalPrice
         ]);
-        $product->decrement('stock', $request->quantity);
+
+        $buyerSaldo->update([
+            'grand_total' => $buyerSaldo->grand_total - $totalPrice
+        ]);
+
+        $storeBalance = StoreBalance::firstOrCreate(
+            ['store_id' => $product->store_id],
+            ['balance' => 0]
+        );
+
+        $storeBalance->increment('balance', $totalPrice - 2);
+        $product->decrement('stock', $quantity);
 
         return redirect()->route('member.dashboard')
             ->with([
@@ -165,11 +195,13 @@ class MemberController extends Controller
         $store = Store::findOrFail($id);
 
         // 2. Ambil Kategori yang HANYA dimiliki oleh produk di toko ini + Hitung jumlah produk per kategori
-        $categories = ProductCategory::whereHas('products', function($query) use ($id) {
+        $categories = ProductCategory::whereHas('products', function ($query) use ($id) {
             $query->where('store_id', $id);
-        })->withCount(['products' => function($query) use ($id) {
-            $query->where('store_id', $id);
-        }])->get();
+        })->withCount([
+                    'products' => function ($query) use ($id) {
+                        $query->where('store_id', $id);
+                    }
+                ])->get();
 
         // 3. Siapkan query produk dasar (milik toko ini)
         $productsQuery = Product::where('store_id', $id);
