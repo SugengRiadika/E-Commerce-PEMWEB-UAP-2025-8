@@ -6,6 +6,7 @@ use App\Models\StoreBalance;
 use App\Models\Transaction;
 use App\Models\TransactionDetail;
 use App\Models\ProductCategory;
+use App\Models\WithDrawal;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -207,10 +208,31 @@ class MemberController extends Controller
             return redirect()->route('member.store');
         }
         $pendingOrders = Transaction::where('store_id', $store->id)
+        ->where('shipping', 'pesanan-diproses')
+        ->count();
+        $withdrawal = WithDrawal::where('store_balance_id',$balance->id)->first();
+       
+        return view('member.mystore-w', compact('pendingOrders', 'store', 'balance', 'incomeHistory','withdrawal'));
+    }
+    public function sellerWithdrawCreate()
+    {
+
+        $store = Store::where('user_id', Auth::id())->firstOrFail();
+        if (!$store->is_verified) {
+            return redirect()->route('member.store');
+        }
+        $incomeHistory = $store->transactions()
+            ->with('transactionDetails.product')
+            ->orderBy('shipping', 'asc')
+            ->latest()
+            ->paginate(10);
+        $balance = StoreBalance::where('store_id', $store->id)->first();
+        $pendingOrders = Transaction::where('store_id', $store->id)
             ->where('shipping', 'pesanan-diproses')
             ->count();
-        return view('member.mystore-w', compact('pendingOrders', 'store', 'balance', 'incomeHistory'));
-    }
+        return redirect()->route('member.mystore-w', $store->id)
+            ->with('success', 'Penarikan dana berhasil .');
+            }
 
     public function getTopup()
     {
