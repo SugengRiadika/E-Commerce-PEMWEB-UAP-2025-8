@@ -154,7 +154,7 @@
 
                         <h4 style="margin-top: 10px; color: #fff;"> JosJis Virtual Account</h4>
 
-                        <div class="va-number">{{ preg_replace('/(.{4})/', '$1 ', $transactions->first()->id) }}
+                        <div class="va-number">{{ preg_replace('/(.{4})/', '$1 ', $transactions->first()->code) }}
                         </div>
 
                         <p style="font-size: 12px; color: #c7d2fe; text-align: center;">

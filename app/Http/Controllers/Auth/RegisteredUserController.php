@@ -49,9 +49,8 @@ class RegisteredUserController extends Controller
         $paymentId = '8880' . $request->phone_number . rand(1000, 9999);
 
         $transaction = Transaction::create([
-            'id' => $paymentId,
             'buyer_id' => $user->id,
-            'code' => 'TRX' . strtoupper(uniqid()),
+            'code' => $paymentId,
             'store_id' => null,
             'total_amount' => 0,
             'payment_status' => 'unpaid',

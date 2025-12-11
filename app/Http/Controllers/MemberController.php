@@ -104,6 +104,11 @@ class MemberController extends Controller
             $file->move(public_path('logo'), $logoName);
         }
 
+        StoreBalance::create([
+            'store_id' => Store::where('user_id', auth()->id())->value('id'),
+            'balance' => 0,
+        ]);
+
         Store::create([
             'user_id' => auth()->id(),    // otomatis dari user login
             'name' => $request->name,
@@ -155,7 +160,7 @@ class MemberController extends Controller
             'code' => 'TRX' . strtoupper(uniqid()),
             'total_amount' => 0,
             'address_id' => '-',
-            'shipping' => '-',
+            'shipping' => 'pesanan-diproses',
             'shipping_type' => '-',
             'shipping_cost' => 0,
             'tracking_number' => null,
@@ -173,10 +178,14 @@ class MemberController extends Controller
             'grand_total' => $buyerSaldo->grand_total - $totalPrice
         ]);
 
-        $storeBalance = StoreBalance::firstOrCreate(
-            ['store_id' => $product->store_id],
-            ['balance' => 0]
+        $storeBalance = StoreBalance::firstOrNew(
+            ['store_id' => $product->store_id]
         );
+
+        if (!$storeBalance->exists) {
+            $storeBalance->balance = 0;
+            $storeBalance->save();
+        }
 
         $storeBalance->increment('balance', $totalPrice - 2);
         $product->decrement('stock', $quantity);

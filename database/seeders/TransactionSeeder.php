@@ -22,10 +22,9 @@ class TransactionSeeder extends Seeder
             $transactionId = '8880' . preg_replace('/\D/', '', $user->phone_number);
 
             Transaction::create([
-                'id' => $transactionId,
                 'buyer_id' => $user->id,
                 'store_id' => null, // user belum punya store → wajib NULL
-                'code' => 'TRX' . strtoupper(uniqid()),
+                'code' => $transactionId,
                 'payment_status' => 'unpaid',
                 'address' => '-',
                 'address_id' => '-',
