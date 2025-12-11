@@ -104,11 +104,7 @@ class MemberController extends Controller
             $file->move(public_path('logo'), $logoName);
         }
 
-        StoreBalance::create([
-            'store_id' => Store::where('user_id', auth()->id())->value('id'),
-            'balance' => 0,
-        ]);
-
+        
         Store::create([
             'user_id' => auth()->id(),    // otomatis dari user login
             'name' => $request->name,
@@ -119,6 +115,10 @@ class MemberController extends Controller
             'logo' => $logoName,
             'postal_code' => $request->postal_code,
             'is_verified' => 0,
+        ]);
+        StoreBalance::create([
+            'store_id' => auth()->user()->store->id,
+            'balance' => 0,
         ]);
 
         return redirect()->route('member.store')->with('success', 'Toko berhasil didaftarkan!');
