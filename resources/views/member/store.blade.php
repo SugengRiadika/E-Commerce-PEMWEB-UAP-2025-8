@@ -114,7 +114,7 @@
                     </p>
 
                     <div style="display: flex; gap: 15px; justify-content: center;">
-                        <a href="{{ route('seller.dashboard') }}" class="submit-btn"
+                        <a href="{{ route('member.mystore') }}" class="submit-btn"
                             style="width: auto; background: #374151; color: white; text-decoration: none;">
                             <i class="fa-solid fa-chart-line"></i> Dashboard Toko
                         </a>

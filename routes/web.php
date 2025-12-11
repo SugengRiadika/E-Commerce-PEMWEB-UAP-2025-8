@@ -53,6 +53,7 @@ Route::middleware(['auth', 'member.only'])->group(function () {
     Route::post('/member/store', [MemberController::class, 'postStore'])->name('member.store.save');
     Route::get('/member/dstore/{id}', [MemberController::class, 'showStore'])->name('member.dstore');
     Route::middleware(['auth', 'member.only'])->group(function () {
+        Route::get('/member/mystore', [MemberController::class, 'sellerDashboard'])->name('member.mystore');
 });
 });
 
