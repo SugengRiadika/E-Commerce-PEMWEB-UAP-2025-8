@@ -1,6 +1,7 @@
 <?php
 namespace Database\Seeders;
 use App\Models\Store;
+use App\Models\StoreBalance;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -44,5 +45,17 @@ class StoreSeeder extends Seeder
             'postal_code'=> '65211',
             'is_verified'=> false,
         ]);
+        StoreBalance::create([
+                'store_id' => 1,
+                'balance' => 0, // user belum punya store → wajib NULL
+            ]);
+            StoreBalance::create([
+                'store_id' =>2,
+                'balance' => 0, // user belum punya store → wajib NULL
+            ]);
+            StoreBalance::create([
+                'store_id' => 3,
+                'balance' => 0, // user belum punya store → wajib NULL
+            ]);
     }
 }
