@@ -73,36 +73,43 @@ body:not(.dashboard-body) {
 }
 
 /* Login Tabs */
-.tab-header {
-    display: flex;
-    gap: 30px;
-    margin-bottom: 40px;
-}
-
+/* 1. Settingan Text Tab */
 .tab-header h2 {
-    font-size: 24px;
+    position: relative; /* Penting: menjadi acuan posisi garis */
     cursor: pointer;
-    position: relative;
-    padding-bottom: 5px;
+    padding-bottom: 8px; /* Jarak antara teks dan garis */
+    color: #6b7280;
+    font-size: 20px;
+    text-decoration: none;
+    border-bottom: none; /* Hapus border statis yang lama */
 }
 
-.tab-header h2.active {
-    color: #ffffff;
-}
-
-.tab-header h2.active::after {
+/* 2. Membuat Garis Animasi (Awalnya tersembunyi) */
+.tab-header h2::after {
     content: '';
     position: absolute;
+    width: 0%; /* Mulai dari lebar 0 */
+    height: 3px; /* Ketebalan garis */
     bottom: 0;
     left: 0;
-    width: 40px;
-    height: 3px;
-    background-color: #6366f1;
-    border-radius: 2px;
+    background-color: #6366f1; /* Warna Ungu */
+    transition: width 0.3s ease-in-out; /* Animasi durasi 0.3 detik */
 }
 
-.tab-header h2.inactive {
-    color: #4b5563;
+/* 3. Logika Animasi: Saat Hover ATAU saat Active */
+.tab-header h2:hover::after,
+.tab-header h2.active::after {
+    width: 100%; /* Garis memanjang penuh */
+}
+
+/* 4. Warna Teks saat Aktif */
+.tab-header h2.active {
+    color: #fff;
+}
+
+/* Opsional: Warna teks berubah sedikit saat di-hover */
+.tab-header h2:hover {
+    color: #d1d5db;
 }
 
 /* Input Styles Global */
@@ -162,7 +169,6 @@ body:not(.dashboard-body) {
     background-color: #0f172a;
 }
 
-/* Form Elements */
 .radio-group-container {
     margin-bottom: 20px;
 }
@@ -246,7 +252,6 @@ body:not(.dashboard-body) {
     align-items: center;
 }
 
-/* Buttons & Actions */
 .action-row {
     display: flex;
     justify-content: space-between;
@@ -297,7 +302,6 @@ body:not(.dashboard-body) {
     color: #6b7280;
 }
 
-/* Bagian Kanan (Visual) */
 .right-section {
     width: 50%;
     background: linear-gradient(135deg, #1e1b4b, #312e81);
@@ -355,9 +359,24 @@ body:not(.dashboard-body) {
     border-radius: 50%;
 }
 
-/* ========================================= */
-/* STYLE DASHBOARD (GLOBAL)                  */
-/* ========================================= */
+.right-section-auth {
+    width: 50%;
+    position: relative;
+    background-color: #1f2937; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.right-section-auth img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; 
+    object-position: center;
+    filter: brightness(0.8); 
+}
+
 body.dashboard-body {
     display: block;
     height: auto;
@@ -365,7 +384,6 @@ body.dashboard-body {
     background-color: #111827;
 }
 
-/* Navbar */
 .navbar {
     background-color: #1f2937;
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
@@ -386,31 +404,22 @@ body.dashboard-body {
     height: 40px;
 }
 
-/* Mengatur ukuran gambar logo */
-/* Pastikan ini ada di style.css Anda */
 .logo {
     display: flex;
     align-items: center;
-    /* Membuat logo sejajar vertikal dengan menu */
     gap: 10px;
 }
 
 .logo img {
     height: 40px;
-    /* Sesuaikan tinggi agar muat di navbar */
     width: auto;
-    /* Lebar akan menyesuaikan otomatis agar tidak gepeng */
     object-fit: contain;
-    /* Memastikan gambar tidak terpotong */
 }
 
 .logo_dash img {
     height: 85px;
-    /* Sesuaikan tinggi agar muat di navbar */
     width: auto;
-    /* Lebar akan menyesuaikan otomatis agar tidak gepeng */
     object-fit: contain;
-    /* Memastikan gambar tidak terpotong */
 }
 
 .nav-links {
@@ -438,7 +447,6 @@ body.dashboard-body {
     align-items: center;
 }
 
-/* Search Box & Buttons */
 .search-box {
     position: relative;
 }
@@ -507,7 +515,6 @@ body.dashboard-body {
     color: #ffffff;
 }
 
-/* Main Grid Layout */
 .container {
     max-width: 98%;
     margin: 30px auto;
@@ -625,17 +632,11 @@ body.dashboard-body {
 
 .product-img {
     width: 100%;
-    /* Lebar mengikuti container card */
     aspect-ratio: 1 / 1;
-    /* KUNCI: Memaksa rasio 1 banding 1 (Persegi) */
     background-color: #111827;
-    /* Warna background jika gambar transparan/loading */
     border-radius: 15px;
-    /* Opsional: memberi lengkungan di sudut gambar */
     overflow: hidden;
-    /* Memotong bagian gambar yang keluar dari kotak */
     display: flex;
-    /* Untuk menjaga posisi jika tidak ada gambar */
     justify-content: center;
     align-items: center;
 }
@@ -697,36 +698,32 @@ body.dashboard-body {
     transform: scale(1.1);
 }
 
-/* Alert Base Styles */
 .alert {
     padding: 15px 20px;
     margin-bottom: 20px;
     border: 1px solid transparent;
-    border-radius: 8px; /* Sudut melengkung modern */
+    border-radius: 8px;
     font-family: 'Poppins', sans-serif;
     font-size: 14px;
     font-weight: 500;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    animation: fadeIn 0.5s ease-in-out; /* Animasi muncul halus */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Bayangan tipis */
+    animation: fadeIn 0.5s ease-in-out; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
 }
 
-/* Alert Success Specifics */
 .alert-success {
-    color: #0f5132;             /* Teks hijau gelap */
-    background-color: #d1e7dd;  /* Background hijau muda lembut */
-    border-color: #badbcc;      /* Border hijau */
+    color: #0f5132;             
+    background-color: #d1e7dd;  
+    border-color: #badbcc;      
 }
 
-/* (Opsional) Icon di dalam alert */
 .alert-icon {
     margin-right: 10px;
     font-size: 16px;
 }
 
-/* Tombol Close (X) */
 .btn-close-alert {
     background: transparent;
     border: none;
@@ -742,7 +739,6 @@ body.dashboard-body {
     opacity: 1;
 }
 
-/* Animasi Fade In */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }
@@ -758,7 +754,6 @@ body.dashboard-body {
     border: 1px solid #374151;
 }
 
-/* Right Sidebar Info */
 .info-card {
     text-align: center;
 }
@@ -826,7 +821,6 @@ body.dashboard-body {
     text-align: center;
 }
 
-/* Transaction & History */
 .page-title {
     margin-bottom: 20px;
     border-bottom: 1px solid #374151;
@@ -949,7 +943,6 @@ body.dashboard-body {
     color: #fff;
 }
 
-/* Topup & Balance */
 .balance-header {
     background: linear-gradient(135deg, #1f2937, #111827);
     padding: 25px;
@@ -1056,7 +1049,6 @@ body.dashboard-body {
     border-radius: 5px;
 }
 
-/* === TABLE STYLES (SELLER & ADMIN) === */
 .data-table {
     width: 100%;
     border-collapse: collapse;
@@ -1087,7 +1079,7 @@ body.dashboard-body {
     display: flex;
     gap: 5px;
 
-    flex-direction: row; /* Force row */
+    flex-direction: row; 
 
     align-items: center;
 }
@@ -1114,7 +1106,6 @@ body.dashboard-body {
     background-color: #3b82f6;
 }
 
-/* === SELLER DASHBOARD SPECIFIC === */
 .seller-container {
     max-width: 1300px;
     margin: 30px auto;
@@ -1125,7 +1116,6 @@ body.dashboard-body {
     align-items: start;
 }
 
-/* Scope stats-grid untuk seller agar 3 kolom */
 .seller-container .stats-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -1133,7 +1123,6 @@ body.dashboard-body {
     margin-bottom: 25px;
 }
 
-/* === ADMIN DASHBOARD SPECIFIC === */
 .admin-container {
     max-width: 1400px;
     margin: 30px auto;
@@ -1144,7 +1133,6 @@ body.dashboard-body {
     align-items: start;
 }
 
-/* Scope stats-grid untuk admin agar 4 kolom */
 .admin-container .stats-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -1231,7 +1219,6 @@ body.dashboard-body {
     font-size: 12px;
 }
 
-/* === HALAMAN TOKO (STORE PAGE) === */
 .store-header-card {
     background: linear-gradient(to right, #1f2937, #111827), url('https://via.placeholder.com/800x200');
     background-size: cover;
@@ -1362,7 +1349,6 @@ body.dashboard-body {
     color: #9ca3af;
 }
 
-/* Responsive General */
 @media (max-width: 992px) {
 
     .container,
