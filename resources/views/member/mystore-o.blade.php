@@ -192,7 +192,7 @@
                                         @foreach($order->transactionDetails as $detail)
                                             <div style="display: flex; gap: 10px; margin-bottom: 10px;">
                                                 <img src="{{ asset('ImageSource/' . $detail->product->slug) }}.png"
-                                                    style="width: 45px; height: 45px; object-fit: cover; border-radius: 5px; background: #374151;">
+                                                    style="width: 45px; height: 45px; object-fit: cover; object-fit: contain; border-radius: 5px; background: #374151;">
                                                 <div>
                                                     <div style="color: white; font-size: 13px; font-weight: 500;">
                                                         {{ $detail->product->name }}</div>
@@ -268,18 +268,13 @@
                     Masukkan info pengiriman. Pesanan akan ditandai sebagai <strong>Diterima/Selesai</strong>.
                 </p>
 
-                <form id="processForm" method="POST">
+                <form id="processForm" method="POST" action="route{{ 'member.mystore-o.process' }}">
                     @csrf
-
+            @method('PUT')
                     <div class="form-group">
                         <label class="form-label">Kurir / Metode Kirim</label>
-                        <input type="text" name="shipping_type" class="form-input"
+                        <input name="shipping_type" class="form-input"
                             placeholder="Contoh: JNE / Kurir Toko" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Nomor Resi (Opsional)</label>
-                        <input type="text" name="tracking_number" class="form-input" placeholder="Jika ada...">
                     </div>
 
                     <div style="display: flex; gap: 10px; margin-top: 25px;">

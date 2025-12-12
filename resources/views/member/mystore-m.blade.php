@@ -109,7 +109,7 @@
             <div class="card">
                 <div class="action-row" style="margin-top: 0; margin-bottom: 20px; border-bottom: 1px solid #374151; padding-bottom: 15px;">
                     <h3 style="color: white; margin: 0;">Daftar Produk</h3>
-                    <a href="{{ route('member.mystore-m.addproduct') }}" class="btn-action btn-detail" style="text-decoration: none; padding: 10px 20px; font-size: 13px;">
+                    <a href="{{ route('member.mystore-m-addform') }}" class="btn-action btn-detail" style="text-decoration: none; padding: 10px 20px; font-size: 13px;">
                         <i class="fa-solid fa-plus"></i> Tambah Produk Baru
                     </a>
                 </div>
@@ -152,7 +152,7 @@
                                 </td>
                                 <td>
                                     <div class="action-btn-group">
-                                        <a href="{{ route('member.mystore-m.process', $product->id) }}" class="btn-sm btn-edit">
+                                        <a href="{{ route('member.mystore-m-editform', $product->id) }}" class="btn-sm btn-edit">
                                             <i class="fa-solid fa-pen"></i> Edit
                                         </a>
                                         

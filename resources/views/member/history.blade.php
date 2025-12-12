@@ -163,7 +163,7 @@
                                 @if($product)
                                     {{-- Menggunakan path ImageSource sesuai dashboard --}}
                                     <img src="{{ asset('ImageSource/' . $product->slug . '.png') }}" alt="produk" 
-                                         style="width: 100%; height: 100%; object-fit: cover;">
+                                         style="width: 100%; height: 100%; object-fit: contain;">
                                 @else
                                     <div style="display:flex; justify-content:center; align-items:center; height:100%; color:#9ca3af;">
                                         <i class="fa-solid fa-box"></i>
@@ -179,7 +179,9 @@
                                         +{{ $trx->transactionDetails->count() - 1 }} produk lainnya
                                     </p>
                                 @endif
-                                <p style="margin-top: 5px;">{{ $totalItems }} Barang total</p>
+                                <p style="margin-top: 5px;">Quantity: {{ $totalItems }}</p>
+                                <p style="margin-top: 5px;">Resi: {{ $trx->tracking_number }}</p>
+                                <p style="margin-top: 5px;">Pengiriman VIA: {{ $trx->shipping_type }}</p>
                             </div>
                         </div>
 

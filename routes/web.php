@@ -45,7 +45,7 @@ Route::middleware(['auth', 'member.only'])->group(function () {
     Route::get('/member/product/{id}', [MemberController::class, 'getProduct'])->name('member.product');
     Route::get('/member/checkout/{id}', [MemberController::class, 'checkout'])->name('member.checkout');
     Route::post('/member/dashboard/{id}', [MemberController::class, 'checkoutProduct'])->name('member.checkout.proses');
-    Route::get('/member/transactionHistory', [MemberController::class, 'getTransaction'])->name('member.transactionHistory');
+    Route::get('/member/transactionHistory', [MemberController::class, 'getHistory'])->name('member.transactionHistory');
     Route::get('/member/topup', [MemberController::class, 'getTopup'])->name('member.topup');
     Route::put('/member/topup', [MemberController::class, 'updateTopup'])->name('member.topup.process');
     Route::get('/member/store', [MemberController::class, 'getStore'])->name('member.store');
@@ -54,12 +54,13 @@ Route::middleware(['auth', 'member.only'])->group(function () {
     Route::middleware(['auth', 'member.only'])->group(function () {
     Route::get('/member/mystore', [MemberController::class, 'sellerDashboard'])->name('member.mystore');
     Route::get('/member/mystore/manage', [MemberController::class, 'sellerManage'])->name('member.mystore-m');
-    Route::get('/member/mystore/manage/addproduct', [MemberController::class, 'sellerManageProduct'])->name('member.mystore-m.addproduct');
-    Route::post('/member/mystore/manage', [MemberController::class, 'sellerManageAdd'])->name('member.mystore-m.add');
-    Route::put('/member/mystore/manage', [MemberController::class, 'sellerManage'])->name('member.mystore-m.process');
+    Route::get('/member/mystore/manage/product', [MemberController::class, 'sellerManageAddProduct'])->name('member.mystore-m-addform');
+    Route::get('/member/mystore/manage/product/{id}', [MemberController::class, 'sellerManageEditProduct'])->name('member.mystore-m-editform');
+    Route::post('/member/mystore/manage', [MemberController::class, 'sellerManageAdd'])->name('member.mystore-productadd');
+    Route::put('/member/mystore/manage', [MemberController::class, 'sellerManageEdit'])->name('member.mystore-productadd');
     Route::delete('/member/mystore/manage/{id}', [MemberController::class, 'sellerManageDelete'])->name('member.mystore-m.delete');
     Route::get('/member/mystore/order', [MemberController::class, 'sellerOrder'])->name('member.mystore-o');
-    Route::put('/member/mystore/order', [MemberController::class, 'sellerOrder'])->name('member.mystore-o.process');
+    Route::put('/member/mystore/order/{id}', [MemberController::class, 'sellerOrderUpdate'])->name('member.mystore-o.process');
     Route::get('/member/mystore/withdrawal', [MemberController::class, 'sellerWithdraw'])->name('member.mystore-w');
     Route::post('/member/mystore/withdrawal', [MemberController::class, 'sellerWithdrawCreate'])->name('member.mystorewithdraw');
 });
