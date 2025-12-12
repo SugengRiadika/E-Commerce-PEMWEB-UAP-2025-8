@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="{{ asset('style.css') }}">
     
     <style>
-        /* CSS Khusus Halaman History */
         .history-list {
             display: flex;
             flex-direction: column;
@@ -136,8 +135,6 @@
             <div class="history-list">
                 @forelse($transactions as $trx)
                     @php
-                        // Ambil produk pertama sebagai preview di kartu
-                        // Perhatikan: menggunakan 'transactionDetails' bukan 'details'
                         $firstDetail = $trx->transactionDetails->first(); 
                         $product = $firstDetail ? $firstDetail->product : null;
                         $totalItems = $trx->transactionDetails->sum('qty');
@@ -161,7 +158,6 @@
                         <div class="trx-body">
                             <div class="trx-img">
                                 @if($product)
-                                    {{-- Menggunakan path ImageSource sesuai dashboard --}}
                                     <img src="{{ asset('ImageSource/' . $product->slug . '.png') }}" alt="produk" 
                                          style="width: 100%; height: 100%; object-fit: contain;">
                                 @else

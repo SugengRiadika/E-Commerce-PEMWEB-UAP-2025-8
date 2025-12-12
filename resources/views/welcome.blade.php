@@ -422,7 +422,7 @@
                 <img src={{asset('ImageSource/josjis_logo.png')}} alt="Logo" style="height: 40px; width: auto;">
                 <span class="logo-text">Hardware_JosJis</span>
             </div>
-            <p>&copy; 2025 Hardware_JosJis. All rights reserved.Created by Kelompok 8 PTI-B.
+            <p>&copy; 2025 Hardware_JosJis. All rights reserved. Created by Kelompok 8 PTI-B.
             </p>
             <div style="margin-top: 20px; display: flex; justify-content: center; gap: 20px;">
                 <a href="#" style="color: #9ca3af;"><i class="fa-brands fa-instagram"></i></a>

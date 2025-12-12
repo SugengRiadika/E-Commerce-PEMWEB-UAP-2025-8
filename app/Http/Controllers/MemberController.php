@@ -17,10 +17,8 @@ class MemberController extends Controller
 {
     public function index()
     {
-        // Semua kategori
         $categories = ProductCategory::all();
 
-        // 4 produk terbaru dengan fitur search
         $search = request('search');
         $latestProducts = Product::with('store', 'productCategory')
             ->latest()
@@ -31,7 +29,6 @@ class MemberController extends Controller
                 });
             })->take(6)->get();
 
-        // 4 toko terbaru (Fixed: syntax where)
         $latestStores = Store::latest()->where('is_verified', true)->take(4)->get();
 
         return view('member.dashboard', compact(
@@ -45,7 +42,6 @@ class MemberController extends Controller
     public function sortbycategory($slug)
     {
         $categories = ProductCategory::all();
-        // Fixed: syntax where
         $latestStores = Store::latest()->where('is_verified', true)->take(4)->get();
 
         $categorySort = ProductCategory::where('slug', $slug)->firstOrFail();
@@ -59,8 +55,6 @@ class MemberController extends Controller
 
     public function dashboard()
     {
-        // Method ini sepertinya redundan jika dashboard utama ada di index(),
-        // tapi jika ini untuk landing page guest, oke.
         $latestProducts = Product::with('store', 'productCategory')->latest()->limit(4)->get();
         return view('welcome', compact('latestProducts'));
     }
@@ -73,10 +67,8 @@ class MemberController extends Controller
 
     public function getStore()
     {
-        // Ambil data toko milik user yang login
         $store = Store::where('user_id', Auth::id())->first();
 
-        // View 'member.store' ini yang menangani logika IF (Form vs Menunggu vs Sukses)
         return view('member.store', compact('store'));
     }
 
@@ -87,7 +79,6 @@ class MemberController extends Controller
             return redirect()->route('member.store');
         }
         $currentBalance = StoreBalance::where('store_id', $store->id)->first();
-        // dd($currentBalance);
         $pendingOrders = Transaction::where('store_id', $store->id)
             ->where('shipping', 'pesanan-diproses')
             ->count();
@@ -126,7 +117,7 @@ class MemberController extends Controller
             return redirect()->route('member.store');
         }
         $categories = ProductCategory::all();
-        return view('member.mystore-addproduct', ['product' => null], compact( 'store', 'products','categories'));
+        return view('member.mystore-addproduct', ['product' => null], compact('store', 'products', 'categories'));
     }
     public function sellerManageEditProduct($id)
     {
@@ -140,9 +131,9 @@ class MemberController extends Controller
             return redirect()->route('member.store');
         }
         $product = Product::where('id', $id)
-        ->where('store_id', $store->id)
-        ->firstOrFail();
-        return view('member.mystore-addproduct', ['product' => $product],compact('categories', 'store', 'products'));
+            ->where('store_id', $store->id)
+            ->firstOrFail();
+        return view('member.mystore-addproduct', ['product' => $product], compact('categories', 'store', 'products'));
     }
     public function sellerManageAdd(Request $request)
     {
@@ -162,7 +153,7 @@ class MemberController extends Controller
         $file = $request->file('image');
         $imageName = $name . '-' . $slug . '.' . $file->getClientOriginalExtension();
         $file->move(public_path('ImageSource'), $imageName);
-        $slug = $name.'-'.$slug;
+        $slug = $name . '-' . $slug;
         $product = Product::create([
             'store_id' => $store->id,
             'product_category_id' => $request->product_category_id,
@@ -174,18 +165,18 @@ class MemberController extends Controller
             'weight' => 1,
             'stock' => $request->stock,
         ]);
-        
+
         return redirect()->route('member.mystore-m')
-        ->with('success', 'Produk berhasil ditambahkan!');
+            ->with('success', 'Produk berhasil ditambahkan!');
     }
     public function sellerManageEdit(Request $request)
     {
         $store = Store::where('user_id', Auth::id())->firstOrFail();
-        
+
         $product = Product::where('id', $request->id)
-        ->where('store_id', $store->id) // keamanan
-        ->firstOrFail();
-        
+            ->where('store_id', $store->id)
+            ->firstOrFail();
+
         $request->validate([
             'product_category_id' => 'required|exists:product_categories,id',
             'name' => 'required|string|max:255',
@@ -196,17 +187,17 @@ class MemberController extends Controller
         ]);
         $name = Str::slug($store->name);
         $slug = Str::slug($request->name);
-        $nameslug = $name.'-'.$slug;
+        $nameslug = $name . '-' . $slug;
         if ($request->hasFile('image')) {
             $oldImage = $nameslug;
-            if ($oldImage && file_exists(public_path('ImageSource/' . $oldImage.'png'))) {
+            if ($oldImage && file_exists(public_path('ImageSource/' . $oldImage . 'png'))) {
                 unlink(public_path('ImageSource/' . $oldImage));
             }
             $file = $request->file('image');
             $imageName = $name . '-' . $slug . '.png';
             $file->move(public_path('ImageSource'), $imageName);
             return redirect()->route('member.mystore')
-            ->with('success', 'Produk berhasil diperbarui!');
+                ->with('success', 'Produk berhasil diperbarui!');
         }
         $product->update([
             'product_category_id' => $request->product_category_id,
@@ -216,8 +207,8 @@ class MemberController extends Controller
             'price' => $request->price,
             'stock' => $request->stock,
         ]);
-        
-        
+
+
     }
     public function sellerManageDelete($id)
     {
@@ -260,27 +251,24 @@ class MemberController extends Controller
         if (!$store->is_verified) {
             return redirect()->route('member.store');
         }
-    $request->validate([
-        'shipping_type' => 'required|string|min:2'
-    ]);
-    
-    
-    // Ambil transaksi milik store (proteksi)
-    $trx = Transaction::where('id', $id)
-    ->where('store_id', $store->id)
-    ->firstOrFail();
-    $blc = StoreBalance::where('store_id',$store->id)->firstOrFail();
-    $increament = $blc->balance + $trx->grand_total-2;
-    $blc->update(['balance' => $increament]);
+        $request->validate([
+            'shipping_type' => 'required|string|min:2'
+        ]);
 
-    $newCode = preg_replace('/^TRX/', 'ORD', $trx->code);
-    // Update status
-    $trx->update([
-        'shipping_type' => $request->shipping_type,
-        'tracking_number'=> $newCode,
-        'shipping' => 'pesanan-diterima'
-    ]);
-        return redirect()->route('member.mystore-o')->with('success','Transaction Berhasil Di Proses');
+        $trx = Transaction::where('id', $id)
+            ->where('store_id', $store->id)
+            ->firstOrFail();
+        $blc = StoreBalance::where('store_id', $store->id)->firstOrFail();
+        $increament = $blc->balance + $trx->grand_total - 2;
+        $blc->update(['balance' => $increament]);
+
+        $newCode = preg_replace('/^TRX/', 'ORD', $trx->code);
+        $trx->update([
+            'shipping_type' => $request->shipping_type,
+            'tracking_number' => $newCode,
+            'shipping' => 'pesanan-diterima'
+        ]);
+        return redirect()->route('member.mystore-o')->with('success', 'Transaction Berhasil Di Proses');
     }
     public function sellerWithdraw()
     {
@@ -320,19 +308,17 @@ class MemberController extends Controller
             'bank_name' => 'required|string|max:20',
         ]);
 
-        // konversi ke ribuan
         $amount = $request->amount / 1000;
 
-        // cek saldo (juga dalam ribuan)
+
         if ($amount > $balance->balance * 1000) {
             return back()->with('error', 'Saldo tidak mencukupi untuk penarikan.');
         }
 
-        // kurangi saldo (ribuan)
         $balance->balance -= $amount;
         $balance->save();
 
-        // simpan withdrawal (ribuan)
+
         WithDrawal::create([
             'store_balance_id' => $balance->id,
             'amount' => $amount,
@@ -350,7 +336,7 @@ class MemberController extends Controller
 
     public function getTopup()
     {
-        // Menampilkan history topup user
+
         $transactions = Transaction::where('buyer_id', Auth::id())->get();
         return view('member.topup', compact('transactions'));
     }
@@ -358,21 +344,17 @@ class MemberController extends Controller
     {
         $userId = auth()->id();
         $transactions = Transaction::where('buyer_id', $userId)
-        ->with(['transactionDetails.product']) // relasi + produk
-        ->orderBy('created_at', 'desc')
-        ->paginate(5);
+            ->with(['transactionDetails.product'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(5);
         return view('member.history', compact('transactions'));
     }
 
     public function updateTopup(Request $request)
     {
-        // PERHATIAN: Menggunakan tabel Transaction sebagai "Dompet" itu berisiko jika user punya banyak transaksi.
-        // Asumsi: Anda mengambil row pertama sebagai "dompet utama".
         $transactions = Transaction::where('buyer_id', Auth::id())->first();
 
         if (!$transactions) {
-            // Handle jika user belum punya row transaksi sama sekali (User baru)
-            // Anda mungkin perlu membuat row baru di sini atau redirect dengan error.
             return back()->with('error', 'Akun saldo belum diinisialisasi.');
         }
 
@@ -380,7 +362,6 @@ class MemberController extends Controller
             'grand_total' => 'required|numeric|min:1000',
         ]);
 
-        // Logic konversi (dibagi 1000?) - sesuaikan dengan kebutuhan sistem payment gateway Anda
         $grandTotal = $request->grand_total / 1000;
 
         $transactions->update([
@@ -420,7 +401,7 @@ class MemberController extends Controller
             'address' => $request->address,
             'logo' => $logoName,
             'postal_code' => $request->postal_code,
-            'is_verified' => 0, // Default belum diverifikasi
+            'is_verified' => 0,
         ]);
 
 
@@ -429,10 +410,9 @@ class MemberController extends Controller
 
     public function checkout(Request $request, $id)
     {
-        // Mengambil saldo user (asumsi row pertama adalah saldo)
         $transaction = Transaction::where('buyer_id', Auth::id())->first();
 
-        $inputQuantity = $request->query('quantity', 1); // Default quantity 1 jika kosong
+        $inputQuantity = $request->query('quantity', 1);
         $product = Product::with(['store', 'productCategory'])->findOrFail($id);
 
         return view('member.checkout', compact('product', 'inputQuantity', 'transaction'));
@@ -440,10 +420,8 @@ class MemberController extends Controller
 
     public function checkoutProduct(Request $request, $id)
     {
-        // 1. Ambil Saldo Pembeli
         $buyerSaldo = Transaction::where('buyer_id', Auth::id())->first();
 
-        // Validasi jika saldo tidak ditemukan atau kurang
         if (!$buyerSaldo) {
             return back()->with('error', 'Saldo tidak ditemukan.');
         }
@@ -458,20 +436,16 @@ class MemberController extends Controller
         $product = Product::findOrFail($id);
         $quantity = $request->stock;
 
-        // Cek stok produk cukup atau tidak
         if ($product->stock < $quantity) {
             return back()->with('error', 'Stok produk tidak mencukupi.');
         }
 
-        // Hitung Total (+2 mungkin biaya admin/pajak?)
         $totalPrice = ($product->price * $quantity) + 2;
 
-        // Cek Saldo Cukup
         if ($buyerSaldo->grand_total < $totalPrice) {
             return back()->with('error', 'Saldo Anda tidak mencukupi.');
         }
 
-        // 2. Buat Transaksi Baru (Record Pembelian)
         $transaction = Transaction::create([
             'buyer_id' => Auth::id(),
             'store_id' => $product->store_id,
@@ -481,7 +455,7 @@ class MemberController extends Controller
             'city' => $request->city,
             'postal_code' => $request->postal_code,
             'code' => 'TRX' . strtoupper(uniqid()),
-            'total_amount' => 0, // Field ini sepertinya tidak dipakai?
+            'total_amount' => 0,
             'address_id' => '-',
             'shipping' => 'pesanan-diproses',
             'shipping_type' => '-',
@@ -497,7 +471,6 @@ class MemberController extends Controller
             'subtotal' => $totalPrice
         ]);
 
-        // 3. Kurangi Saldo Pembeli
         $buyerSaldo->update([
             'grand_total' => $buyerSaldo->grand_total - $totalPrice
         ]);
@@ -511,7 +484,6 @@ class MemberController extends Controller
             $storeBalance->save();
         }
 
-        // 5. Kurangi Stok Produk
         $product->decrement('stock', $quantity);
 
         return redirect()->route('member.dashboard')

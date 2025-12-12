@@ -342,7 +342,7 @@
                     </div>
                     @if ($product->stock > 0)
                     <a id="buyNowBtn" href="#">
-    <button class="submit-btn" style="flex:1; background:#6366f1;">
+    <button class="submit-btn" style="flex:1; background:#7366f1;color:white;">
         <i class="fa-solid fa-money-bill-wave"></i> Beli Sekarang
     </button>
 </a>
@@ -374,37 +374,6 @@
             </div>
         </div>
 
-        <div class="section-header" style="margin-top: 60px; margin-bottom: 20px;">
-            <h3>Produk Terkait</h3>
-        </div>
-
-        <div class="product-grid" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 50px;">
-            @if(isset($related_products) && count($related_products) > 0)
-                @foreach($related_products as $related)
-                    <div class="card product-card">
-                        <div class="product-img">
-                            <img
-                                src="{{ $related->image ? asset('storage/' . $related->image) : 'https://via.placeholder.com/300' }}">
-                        </div>
-                        <div class="product-info">
-                            <h4><a href="{{ route('product.detail', $related->id) }}"
-                                    style="text-decoration: none; color: inherit;">{{ $related->name }}</a></h4>
-                            <span class="category-tag">{{ $related->category->name ?? 'Gadget' }}</span>
-                            <div class="price-row">
-                                <span class="price">Rp {{ number_format($related->price, 0, ',', '.') }}</span>
-                                <a href="{{ route('product.detail', $related->id) }}" class="btn-icon"><i
-                                        class="fa-solid fa-chevron-right"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-            @else
-                <p style="color: #9ca3af;">Belum ada produk terkait.</p>
-            @endif
-        </div>
-
-    </div>
-
     <footer
         style="text-align: center; color: #6b7280; padding: 40px 0; border-top: 1px solid #374151; margin-top: 50px;">
         <p>&copy; 2025 Hardware_JosJis. All rights reserved.</p>
@@ -435,7 +404,6 @@
 
     let qty = document.getElementById('qtyInput').value;
 
-    // bangun URL checkout dengan quantity
     let url = "{{ route('member.checkout', ['id' => $product->id]) }}?quantity=" + qty;
 
     window.location.href = url;

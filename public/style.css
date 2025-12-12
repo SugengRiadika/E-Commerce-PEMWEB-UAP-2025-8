@@ -4,6 +4,10 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+
+
 }
 
 /* Background Utama */
@@ -597,6 +601,9 @@ body.dashboard-body {
     font-size: 14px;
     margin-bottom: 20px;
     opacity: 0.8;
+}
+.promo-icon {
+    font-size: 5rem;
 }
 
 .btn-pill-white {

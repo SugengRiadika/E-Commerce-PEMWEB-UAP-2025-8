@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="{{ asset('style.css') }}">
 
     <style>
-        /* CSS tambahan agar layout lebih rapi */
         .topup-grid {
             display: grid;
             gap: 25px;
@@ -185,28 +184,21 @@
     </div>
 
     <script>
-        // Update realtime dari input nominal
         document.getElementById('amountInput').addEventListener('input', function () {
             let value = this.value;
 
-            // Format angka jadi format Indonesia (10.000)
             let formatted = value ? parseInt(value).toLocaleString('id-ID') : "0";
 
-            // Update paragraf nominal
             document.querySelector('p strong').innerText = " Rp " + formatted + " ";
         });
 
-        // Fungsi setNominal tetap bisa dipakai
         function setNominal(amount) {
             document.getElementById('amountInput').value = amount;
 
-            // Format Indonesia
             let formatted = parseInt(amount).toLocaleString('id-ID');
 
-            // Update paragraf nominal
             document.querySelector('p strong').innerText = " Rp " + formatted + " ";
 
-            // Visual button (jika ada tombol nominal)
             let buttons = document.querySelectorAll('.nominal-btn');
             buttons.forEach(btn => {
                 btn.classList.remove('selected');

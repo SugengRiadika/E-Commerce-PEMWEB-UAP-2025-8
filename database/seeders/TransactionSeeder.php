@@ -14,7 +14,6 @@ class TransactionSeeder extends Seeder
 
         foreach ($users as $user) {
 
-            // Lewati user tanpa phone number
             if (!$user->phone_number) {
                 continue;
             }
@@ -23,7 +22,7 @@ class TransactionSeeder extends Seeder
 
             Transaction::create([
                 'buyer_id' => $user->id,
-                'store_id' => null, // user belum punya store → wajib NULL
+                'store_id' => null,
                 'code' => $transactionId,
                 'payment_status' => 'unpaid',
                 'address' => '-',

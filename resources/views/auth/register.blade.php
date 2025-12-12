@@ -100,18 +100,6 @@
                         <span class="error-msg">{{ $message }}</span>
                     @enderror
 
-                    <div class="input-group" style="margin-top: 15px;">
-                        <i class="fa-solid fa-lock input-icon"></i>
-                        <input type="password" 
-                               name="password_confirmation" 
-                               placeholder="Ulangi Password" 
-                               required 
-                               autocomplete="new-password">
-                    </div>
-                    @error('password_confirmation')
-                         <span class="error-msg">{{ $message }}</span>
-                    @enderror
-
                     <div class="action-row" style="margin-top: 25px;">
                         <button type="submit" class="submit-btn login-width">
                             Daftar Akun

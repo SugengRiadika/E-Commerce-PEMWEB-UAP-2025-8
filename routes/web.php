@@ -5,9 +5,6 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
 Route::get('/', [MemberController::class, 'dashboard'])->name('welcome');
 
 
@@ -22,7 +19,6 @@ Route::middleware('auth')->group(function () {
 });
 
 
-// User CRUD (admin only)
 Route::middleware(['auth', 'admin.only'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::put('/admin/store/{id}/verify', [AdminController::class, 'verifyStore'])->name('admin.store.verify');
@@ -36,8 +32,8 @@ Route::middleware(['auth', 'admin.only'])->group(function () {
     Route::get('/admin/stores', [AdminController::class, 'toko'])->name('admin.stores');
 });
 Route::middleware(['auth', 'seller.only'])
-->get('/seller/dashboard', fn() => view('seller.dashboard'))
-->name('seller.dashboard');
+    ->get('/seller/dashboard', fn() => view('seller.dashboard'))
+    ->name('seller.dashboard');
 
 Route::middleware(['auth', 'member.only'])->group(function () {
     Route::get('/member/dashboard', [MemberController::class, 'index'])->name('member.dashboard');
@@ -52,18 +48,18 @@ Route::middleware(['auth', 'member.only'])->group(function () {
     Route::post('/member/store', [MemberController::class, 'postStore'])->name('member.store.save');
     Route::get('/member/dstore/{id}', [MemberController::class, 'showStore'])->name('member.dstore');
     Route::middleware(['auth', 'member.only'])->group(function () {
-    Route::get('/member/mystore', [MemberController::class, 'sellerDashboard'])->name('member.mystore');
-    Route::get('/member/mystore/manage', [MemberController::class, 'sellerManage'])->name('member.mystore-m');
-    Route::get('/member/mystore/manage/product', [MemberController::class, 'sellerManageAddProduct'])->name('member.mystore-m-addform');
-    Route::get('/member/mystore/manage/product/{id}', [MemberController::class, 'sellerManageEditProduct'])->name('member.mystore-m-editform');
-    Route::post('/member/mystore/manage', [MemberController::class, 'sellerManageAdd'])->name('member.mystore-productadd');
-    Route::put('/member/mystore/manage', [MemberController::class, 'sellerManageEdit'])->name('member.mystore-productadd');
-    Route::delete('/member/mystore/manage/{id}', [MemberController::class, 'sellerManageDelete'])->name('member.mystore-m.delete');
-    Route::get('/member/mystore/order', [MemberController::class, 'sellerOrder'])->name('member.mystore-o');
-    Route::put('/member/mystore/order/{id}', [MemberController::class, 'sellerOrderUpdate'])->name('member.mystore-o.process');
-    Route::get('/member/mystore/withdrawal', [MemberController::class, 'sellerWithdraw'])->name('member.mystore-w');
-    Route::post('/member/mystore/withdrawal', [MemberController::class, 'sellerWithdrawCreate'])->name('member.mystorewithdraw');
-});
+        Route::get('/member/mystore', [MemberController::class, 'sellerDashboard'])->name('member.mystore');
+        Route::get('/member/mystore/manage', [MemberController::class, 'sellerManage'])->name('member.mystore-m');
+        Route::get('/member/mystore/manage/product', [MemberController::class, 'sellerManageAddProduct'])->name('member.mystore-m-addform');
+        Route::get('/member/mystore/manage/product/{id}', [MemberController::class, 'sellerManageEditProduct'])->name('member.mystore-m-editform');
+        Route::post('/member/mystore/manage', [MemberController::class, 'sellerManageAdd'])->name('member.mystore-productadd');
+        Route::put('/member/mystore/manage', [MemberController::class, 'sellerManageEdit'])->name('member.mystore-productadd');
+        Route::delete('/member/mystore/manage/{id}', [MemberController::class, 'sellerManageDelete'])->name('member.mystore-m.delete');
+        Route::get('/member/mystore/order', [MemberController::class, 'sellerOrder'])->name('member.mystore-o');
+        Route::put('/member/mystore/order/{id}', [MemberController::class, 'sellerOrderUpdate'])->name('member.mystore-o.process');
+        Route::get('/member/mystore/withdrawal', [MemberController::class, 'sellerWithdraw'])->name('member.mystore-w');
+        Route::post('/member/mystore/withdrawal', [MemberController::class, 'sellerWithdrawCreate'])->name('member.mystorewithdraw');
+    });
 });
 
 

@@ -101,7 +101,6 @@ class AdminController extends Controller
     {
         $user = User::findOrFail($id);
 
-        // Jika user punya toko → hapus juga
         if ($user->store) {
             $user->store->delete();
         }
@@ -115,7 +114,6 @@ class AdminController extends Controller
     {
         $store = Store::findOrFail($id);
 
-        // Jika user punya toko → hapus juga
         if ($store) {
             $store->delete();
         }
@@ -129,7 +127,7 @@ class AdminController extends Controller
     {
         $totalPendingStores = Store::where('is_verified', false)->count();
 
-        $search = request('search'); // ambil query dari input search
+        $search = request('search'); 
         $users = User::with('store')
             ->where('role', '!=', 'admin')
             ->when($search, function ($query) use ($search) {
@@ -145,7 +143,7 @@ class AdminController extends Controller
     {
         $pendingStores = Store::where('is_verified', false)->get();
         $totalPendingStores = Store::where('is_verified', false)->count();
-        $search = request('search'); // ambil query dari input search
+        $search = request('search');
         $pendingStoresData = Store::with('user')
             ->where('is_verified', false)
             ->latest()
@@ -155,14 +153,14 @@ class AdminController extends Controller
                         ->orWhere('city', 'LIKE', "%{$search}%");
                 });
             })
-            ->take(10) // tetap batasi 5 hasil
+            ->take(10)
             ->get();
         return view('admin.verifikasi', compact('search', 'pendingStores', 'totalPendingStores', 'pendingStoresData'));
     }
     public function toko()
     {
         $totalPendingStores = Store::where('is_verified', false)->count();
-        $search = request('search'); // ambil query dari input search
+        $search = request('search');
         $storeGets = Store::with('user')->where('is_verified', true)->when($search, function ($query) use ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'LIKE', "%{$search}%")

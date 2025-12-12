@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="{{ asset('style.css') }}">
 
     <style>
-        /* CSS Tambahan untuk Status State */
         .status-container {
             text-align: center;
             padding: 50px 20px;
@@ -108,7 +107,6 @@
             @elseif(Auth::user()->store && !Auth::user()->isSeller())
         <div class="card" style="margin-top: 40px;">
 
-            {{-- LOGIKA UTAMA --}}
 
                 <div class="status-container">
                     <i class="fa-solid fa-hourglass-half status-icon status-pending"></i>
@@ -221,7 +219,6 @@
             const reader = new FileReader();
 
             reader.onload = function(e) {
-                // Tampilkan gambar dan sembunyikan placeholder
                 preview.src = e.target.result;
                 preview.style.display = 'block';
                 placeholder.style.display = 'none';

@@ -291,7 +291,6 @@
         <script>
             function openModal(orderId) {
                 const form = document.getElementById('processForm');
-                // Ganti route action secara dinamis
                 form.action = "{{ route('member.mystore-o.process', ':id') }}".replace(':id', orderId);
                 document.getElementById('processModal').style.display = 'flex';
             }
