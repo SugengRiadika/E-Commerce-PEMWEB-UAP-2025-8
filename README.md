@@ -1,5 +1,8 @@
 # Hardware_JosJis 🛒
 
+**Anggota** = **Sayyid Ilmi Hubballillah (245150600111027)**
+              **Sugeng Riadika (245150600111020)**
+
 **Hardware_JosJis** adalah platform e-commerce berbasis web yang dirancang khusus untuk transaksi jual-beli perangkat keras komputer (hardware) dan laptop. Aplikasi ini dibangun menggunakan framework **Laravel** dengan antarmuka yang responsif dan sistem manajemen toko yang komprehensif.
 
 ![Laravel](https://img.shields.io/badge/Laravel-10%2B-red) ![Bootstrap](https://img.shields.io/badge/CSS-Custom-blue) ![Status](https://img.shields.io/badge/Status-Development-orange)
