@@ -3,9 +3,9 @@
 **Anggota** = **Sayyid Ilmi Hubballillah (245150600111027)**
               **Sugeng Riadika (245150600111020)**
 
-**Hardware_JosJis** adalah platform e-commerce berbasis web yang dirancang khusus untuk transaksi jual-beli perangkat keras komputer (hardware) dan laptop. Aplikasi ini dibangun menggunakan framework **Laravel** dengan antarmuka yang responsif dan sistem manajemen toko yang komprehensif.
+**Hardware_JosJis** merupakan platform e-commerce berbasis web yang dirancang khusus untuk transaksi jual-beli perangkat keras komputer (hardware) dan laptop. Aplikasi ini dibangun menggunakan framework **Laravel** dengan antarmuka yang responsif dan sistem manajemen toko yang komprehensif.
 
-![Laravel](https://img.shields.io/badge/Laravel-10%2B-red) ![Bootstrap](https://img.shields.io/badge/CSS-Custom-blue) ![Status](https://img.shields.io/badge/Status-Development-orange)
+![Laravel](https://img.shields.io/badge/Laravel-12%2B-red) ![Bootstrap](https://img.shields.io/badge/CSS-Custom-blue) ![Status](https://img.shields.io/badge/Status-Development-orange)
 
 ## 📋 Fitur Utama
 
@@ -19,7 +19,7 @@ Aplikasi ini membagi pengguna menjadi tiga peran utama dengan fungsionalitas ber
 * **Katalog & Pencarian:** Menjelajahi produk berdasarkan kategori atau menggunakan fitur pencarian kata kunci.
 * **Keranjang & Checkout:** Membeli produk dengan sistem validasi stok otomatis dan pengurangan saldo.
 * **Top Up Saldo:** Fitur simulasi pengisian saldo akun untuk bertransaksi.
-* **Riwayat Transaksi:** Memantau status pesanan (Diproses, Dikirim, Selesai).
+* **Riwayat Transaksi:** Memantau status pesanan dan saldo yang dimiliki(Diproses, Dikirim, Selesai).
 
 ### 3. Seller (Penjual)
 * **Manajemen Toko:** Mendaftarkan toko baru dengan logo dan deskripsi kustom.
@@ -36,6 +36,12 @@ Aplikasi ini membagi pengguna menjadi tiga peran utama dengan fungsionalitas ber
 * **Manajemen User:** Mengelola data pengguna aplikasi.
 
 ---
+## 🛠️ Teknologi yang Digunakan
+
+* **Admin:** Email admin@gmail.com PW admin123
+* **Member:** Email superimpact@gmail.com PW superimpact123 atau Register saja
+* **Seller:** Email gasol@gmail.com PW gasol123 atau Register saja kemudian pergi ke Toko saya dan mengisi form, kemudian meminta validasi dari role admin di verifikasi toko
+---
 
 ## 🛠️ Teknologi yang Digunakan
 
@@ -50,9 +56,9 @@ Aplikasi ini membagi pengguna menjadi tiga peran utama dengan fungsionalitas ber
 ## ⚙️ Persyaratan Sistem
 
 Pastikan komputer Anda telah terinstal:
-* PHP >= 8.1
+* PHP >= 8.3x
 * Composer
-* MySQL / MariaDB
+* MySQL 
 * Web Server (Apache/Nginx/Laragon/XAMPP)
 
 ---
@@ -63,8 +69,8 @@ Ikuti langkah-langkah berikut untuk menjalankan proyek di lokal:
 
 1.  **Clone Repositori**
     ```bash
-    git clone [https://github.com/username-anda/hardware-josjis.git](https://github.com/username-anda/hardware-josjis.git)
-    cd hardware-josjis
+    git clone [https://github.com/SayyidIlmi/E-Commerce-PEMWEB-UAP-2025-8.git]
+    cd E-Commerce-PEMWEB-UAP-2025-8
     ```
 
 2.  **Install Dependencies**
@@ -87,13 +93,13 @@ Ikuti langkah-langkah berikut untuk menjalankan proyek di lokal:
 4.  **Generate Key & Migrasi Database**
     ```bash
     php artisan key:generate
-    php artisan migrate
+    php artisan migrate -seed
     ```
 
 5.  **Setup Storage Link**
-    Agar gambar produk yang diupload bisa diakses:
+    Agar bisa Berjalan:
     ```bash
-    php artisan storage:link
+    npm install && npm run build
     ```
 
 6.  **Jalankan Server**
@@ -108,17 +114,13 @@ Ikuti langkah-langkah berikut untuk menjalankan proyek di lokal:
 
 Berikut adalah lokasi file logika utama dalam proyek ini:
 
-* **Controller Utama:** `app/Http/Controllers/MemberController.php` (Mengatur logika Member & Seller).
-* **Routing:** `routes/web.php` (Mengatur alur URL dan Middleware).
+* **Controller Utama Member:** `app/Http/Controllers/MemberController.php` (Mengatur logika Member & Seller).
+* **Controller Utama Admin:** `app/Http/Controllers/AdminController.php` (Mengatur logika Admin).
+* **Routing:** `routes/web.php`,`routes/auth.php`  (Mengatur alur URL dan Middleware).
 * **Views (Frontend):**
     * `resources/views/auth/`: Halaman Login & Register.
     * `resources/views/member/`: Halaman Dashboard, Produk, dan Toko.
+    * `resources/views/admin/`: Halaman Dashboard admin.
 * **Styling:** `public/style.css`.
-
----
-
-## 🤝 Kontribusi
-
-Pull request dipersilakan. Untuk perubahan besar, harap buka *issue* terlebih dahulu untuk mendiskusikan apa yang ingin Anda ubah.
 
 ---

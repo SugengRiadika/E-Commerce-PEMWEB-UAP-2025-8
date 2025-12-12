@@ -74,10 +74,10 @@
                 <span class="logo-text">Hardware_JosJis</span>
             </div>
             <ul class="nav-links">
-                <li><a href="{{ route('member.dashboard') }}" class="active">Home</a></li>
+                <li><a href="{{ route('member.dashboard') }}">Home</a></li>
                 <li><a href="{{ route('member.transactionHistory') }}">Riwayat Transaksi</a></li>
                 <li><a href="{{ route('member.topup') }}">Topup Saldo</a></li>
-                <li><a href="{{ route('member.store') }}">Toko Saya</a></li>
+                <li><a href="{{ route('member.store') }}"class="active">Toko Saya</a></li>
             </ul>
             <div class="nav-actions">
 
@@ -120,7 +120,7 @@
                 <ul class="category-list">
                     <li>
                         <a href="{{ route('member.mystore') }}" class="active"
-                            style="background: #374151; color: white;">
+                            >
                             <i class="fa-solid fa-chart-line" style="width: 20px;"></i> Dashboard
                         </a>
                     </li>
@@ -146,7 +146,7 @@
                     <li
                         style="margin-top: 15px; margin-bottom: 5px; font-size: 11px; color: #6b7280; padding-left: 15px;">
                         KEUANGAN</li>
-                    <li><a href="{{route('member.mystore-w')}}"><i class="fa-solid fa-wallet" style="width: 20px;"></i>
+                    <li><a href="{{route('member.mystore-w')}}" style="background: #374151; color: white;"><i class="fa-solid fa-wallet" style="width: 20px;"></i>
                             Saldo Toko</a></li>
                     </li>
                 </ul>

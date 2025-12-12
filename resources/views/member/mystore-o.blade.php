@@ -70,10 +70,10 @@
                 <span class="logo-text">Hardware_JosJis</span>
             </div>
             <ul class="nav-links">
-                <li><a href="{{ route('member.dashboard') }}" class="active">Home</a></li>
+                <li><a href="{{ route('member.dashboard') }}">Home</a></li>
                 <li><a href="{{ route('member.transactionHistory') }}">Riwayat Transaksi</a></li>
                 <li><a href="{{ route('member.topup') }}">Topup Saldo</a></li>
-                <li><a href="{{ route('member.store') }}">Toko Saya</a></li>
+                <li><a href="{{ route('member.store') }}"class="active">Toko Saya</a></li>
             </ul>
             <div class="nav-actions">
 
@@ -121,8 +121,8 @@
                 </div>
                 <ul class="category-list">
                     <li>
-                        <a href="{{ route('member.mystore') }}" class="active"
-                            style="background: #374151; color: white;">
+                        <a href="{{ route('member.mystore') }}" 
+                            >
                             <i class="fa-solid fa-chart-line" style="width: 20px;"></i> Dashboard
                         </a>
                     </li>
@@ -136,7 +136,7 @@
                         style="margin-top: 15px; margin-bottom: 5px; font-size: 11px; color: #6b7280; padding-left: 15px;">
                         PESANAN</li>
                     <li>
-                        <a href="{{route('member.mystore-o')}}">
+                        <a href="{{route('member.mystore-o')}}" style="background: #374151; color: white;">
                             <i class="fa-solid fa-clipboard-list" style="width: 20px;"></i> Pesanan Masuk
                             @if($pendingOrders > 0)
                                 <span class="badge bg-pending"

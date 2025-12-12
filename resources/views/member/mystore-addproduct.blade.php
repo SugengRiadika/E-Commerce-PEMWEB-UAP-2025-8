@@ -70,10 +70,10 @@
                 <span class="logo-text">Hardware_JosJis</span>
             </div>
             <ul class="nav-links">
-                <li><a href="{{ route('member.dashboard') }}" class="active">Home</a></li>
+                <li><a href="{{ route('member.dashboard') }}">Home</a></li>
                 <li><a href="{{ route('member.transactionHistory') }}">Riwayat Transaksi</a></li>
                 <li><a href="{{ route('member.topup') }}">Topup Saldo</a></li>
-                <li><a href="{{ route('member.store') }}">Toko Saya</a></li>
+                <li><a href="{{ route('member.store') }}"class="active">Toko Saya</a></li>
             </ul>
             <div class="nav-actions">
                 <div class="search-box">
