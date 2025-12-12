@@ -105,7 +105,7 @@ class MemberController extends Controller
         $products = Product::where('store_id', $store->id)
             ->with('store')
             ->latest()
-            ->paginate(10);
+            ->paginate(7);
         if (!$store->is_verified) {
             return redirect()->route('member.store');
         }
@@ -113,6 +113,21 @@ class MemberController extends Controller
             ->where('shipping', 'pesanan-diproses')
             ->count();
         return view('member.mystore-m', compact('pendingOrders', 'store', 'products'));
+    }
+    public function sellerManageProduct()
+    {
+        $store = Store::where('user_id', Auth::id())->firstOrFail();
+        $products = Product::where('store_id', $store->id)
+            ->with('store')
+            ->latest()
+            ->paginate(7);
+        if (!$store->is_verified) {
+            return redirect()->route('member.store');
+        }
+        $pendingOrders = Transaction::where('store_id', $store->id)
+            ->where('shipping', 'pesanan-diproses')
+            ->count();
+        return view('member.mystore-addproduct', compact('pendingOrders', 'store', 'products'));
     }
     public function sellerManageAdd(Request $request)
     {
@@ -126,6 +141,7 @@ class MemberController extends Controller
             'stock' => 'required|integer|min:1',
         ]);
         $slug = Str::slug($request->name);
+        dd($slug);
         $file = $request->file('image');
         $imageName = $store->name.'-'.$slug.'.' .$file->getClientOriginalExtension();
         $file->move(public_path('ImageSource'), $imageName);
@@ -183,8 +199,7 @@ class MemberController extends Controller
             ->with('transactionDetails.product')
             ->orderBy('shipping', 'asc')
             ->latest()
-            ->paginate(5)
-            ->appends(['status' => request('status')]);
+            ->paginate(5);
 
         $status = $store->transactions()
             ->with('transactionDetails.product')
@@ -196,7 +211,7 @@ class MemberController extends Controller
     }
     public function sellerWithdraw()
     {
-
+        
         $store = Store::where('user_id', Auth::id())->firstOrFail();
         $incomeHistory = $store->transactions()
             ->with('transactionDetails.product')
@@ -211,28 +226,54 @@ class MemberController extends Controller
         ->where('shipping', 'pesanan-diproses')
         ->count();
         $withdrawal = WithDrawal::where('store_balance_id',$balance->id)->first();
+        $withdrawalall = WithDrawal::where('store_balance_id',$balance->id)->sum('amount');
        
-        return view('member.mystore-w', compact('pendingOrders', 'store', 'balance', 'incomeHistory','withdrawal'));
+        return view('member.mystore-w', compact('pendingOrders', 'store', 'balance', 'incomeHistory','withdrawal','withdrawalall'));
     }
-    public function sellerWithdrawCreate()
-    {
+public function sellerWithdrawCreate(Request $request)
+{
+    $store = Store::where('user_id', Auth::id())->firstOrFail();
 
-        $store = Store::where('user_id', Auth::id())->firstOrFail();
-        if (!$store->is_verified) {
-            return redirect()->route('member.store');
-        }
-        $incomeHistory = $store->transactions()
-            ->with('transactionDetails.product')
-            ->orderBy('shipping', 'asc')
-            ->latest()
-            ->paginate(10);
-        $balance = StoreBalance::where('store_id', $store->id)->first();
-        $pendingOrders = Transaction::where('store_id', $store->id)
-            ->where('shipping', 'pesanan-diproses')
-            ->count();
-        return redirect()->route('member.mystore-w', $store->id)
-            ->with('success', 'Penarikan dana berhasil .');
-            }
+    if (!$store->is_verified) {
+        return redirect()->route('member.store');
+    }
+
+    $balance = StoreBalance::where('store_id', $store->id)->firstOrFail();
+
+    $request->validate([
+        'amount' => 'required|numeric|min:10000',
+        'bank_account_name' => 'required|string|max:50',
+        'bank_account_number' => 'required|string|max:15',
+        'bank_name' => 'required|string|max:20',
+    ]);
+
+    // konversi ke ribuan
+    $amount = $request->amount / 1000;
+
+    // cek saldo (juga dalam ribuan)
+    if ($amount > $balance->balance*1000) {
+        return back()->with('error', 'Saldo tidak mencukupi untuk penarikan.');
+    }
+
+    // kurangi saldo (ribuan)
+    $balance->balance -= $amount;
+    $balance->save();
+
+    // simpan withdrawal (ribuan)
+    WithDrawal::create([
+        'store_balance_id' => $balance->id,
+        'amount' => $amount,
+        'bank_account_name' => $request->bank_account_name,
+        'bank_account_number' => $request->bank_account_number,
+        'bank_name' => $request->bank_name,
+        'status' => 'pending',
+    ]);
+
+    return redirect()
+        ->route('member.mystore-w')
+        ->with('success', 'Penarikan dana berhasil diajukan.');
+}
+
 
     public function getTopup()
     {

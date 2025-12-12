@@ -103,12 +103,6 @@
         </div>
     </nav>
 
-    @if(session('success'))
-        <div class="alert"
-            style="background: rgba(74, 222, 128, 0.1); border: 1px solid #4ade80; color: #4ade80; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
-            <i class="fa-solid fa-check-circle"></i> {{ session('success') }}
-        </div>
-    @endif
     <div class="seller-container">
         <aside class="sidebar-left">
             <div class="card card-sidebar">
@@ -200,7 +194,7 @@
                 
                 <div class="balance-card-main" style="background:#8a8235ff;">
                     <div style="font-size: 14px; opacity: 0.9;">Withdrawal (Nama Bank)</div>
-                    <div class="balance-amount-lg">Rp {{ number_format($balance->balance, 0, ',', '.') }}.000</div>
+                    <div class="balance-amount-lg">Rp 0.000</div>
                     <div style="display: flex; justify-content: space-between; align-items: end;">
                         <p style="font-size: 12px; opacity: 0.8; margin-bottom: 0;">Dana Yang ditarik ke bank.</p>
                     </div>
@@ -208,7 +202,7 @@
                 @elseif($withdrawal->id && $withdrawal->id)
                 <div class="balance-card-main" style="background:#8a8235ff;">
                     <div style="font-size: 14px; opacity: 0.9;">Withdrawal {{$withdrawal->bank_name}}</div>
-                    <div class="balance-amount-lg">Rp {{ number_format($withdrawal->amount, 0, ',', '.') }}.000</div>
+                    <div class="balance-amount-lg">Rp {{ number_format($withdrawalall, 0, ',', '.') }}.000</div>
                     <div style="display: flex; justify-content: space-between; align-items: end;">
                         <p style="font-size: 12px; opacity: 0.8; margin-bottom: 0;">Dana Yang ditarik ke bank.</p>
                     </div>
@@ -249,7 +243,7 @@
                                     </td>
                                     <td style="text-align: right;">
                                         <span style="color: #4ade80; font-weight: 600;">+ Rp
-                                            {{ number_format($history->grand_total, 0, ',', '.') }}.000</span>
+                                            {{ number_format($history->grand_total-2, 0, ',', '.') }}.000</span>
                                     </td>
                                 </tr>
                             @empty
@@ -275,21 +269,19 @@
     <div id="withdrawModal" class="modal-overlay">
         <div class="modal-box">
             <h3 style="color: white; margin-bottom: 15px;">Tarik Dana</h3>
-            <p style="color: #9ca3af; font-size: 13px; margin-bottom: 20px;">
-                Dana akan ditransfer maksimal 1x24 jam hari kerja.
-            </p>
 
-            <form action="{{ route('member.balance.withdraw') }}" method="POST">
+            <form action="{{ route('member.mystorewithdraw') }}" method="POST">
                 @csrf
-
+                
                 <div class="form-group">
                     <label class="form-label">Nominal Penarikan (Rp)</label>
                     <input type="number" name="amount" class="form-input" placeholder="Min. 10.000" min="10000"
-                        required>
+                    required>
                     <small style="color: #6b7280; font-size: 10px;">Saldo saat ini: Rp
                         {{ number_format($balance->balance, 0, ',', '.') }}.000</small>
-                </div>
-
+                    </div>
+                    
+                    @if (!$withdrawal)
                 <div class="form-group">
                     <label class="form-label">Bank Tujuan</label>
                     <select name="bank_name" class="form-select" required>
@@ -301,23 +293,51 @@
                         <option value="DANA">DANA (E-Wallet)</option>
                     </select>
                 </div>
-
+                
                 <div class="form-group">
                     <label class="form-label">Nomor Rekening</label>
-                    <input type="number" name="account_number" class="form-input" placeholder="Masukkan nomor rekening"
-                        required>
+                    <input name="bank_account_number" class="form-input" placeholder="Masukkan nomor rekening"
+                    required>
                 </div>
-
+                <div class="form-group">
+                    <label class="form-label">Nama Akun</label>
+                    <input name="bank_account_name" class="form-input" placeholder="Masukkan nama akun"
+                    required>
+                </div>
+                
                 <div style="display: flex; gap: 10px; margin-top: 25px;">
                     <button type="button" onclick="closeModal()" class="btn-outline"
-                        style="flex: 1; border-color: #374151; color: #d1d5db;">Batal</button>
+                    style="flex: 1; border-color: #374151; color: #d1d5db;">Batal</button>
                     <button type="submit" class="submit-btn"
-                        style="flex: 1; background: #059669; padding: 10px; font-size: 14px;">Ajukan</button>
+                    style="flex: 1; background: #059669; padding: 10px; font-size: 14px;">Ajukan</button>
                 </div>
+    @else
+
+    <div class="form-group">
+                    <input hidden name="bank_name" class="form-input" value="{{$withdrawal->bank_name}}"
+                    required>
+                </div>
+                
+                <div class="form-group">
+                    <input hidden type="bank_account_number" value="{{$withdrawal->bank_account_number}}" name="bank_account_number" class="form-input" placeholder="Masukkan nomor rekening"
+                    required>
+                </div>
+                
+                <div class="form-group">
+                    <input hidden name="bank_account_name" class="form-input" value="{{$withdrawal->bank_account_name}}"
+                    required>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 25px;">
+                    <button type="button" onclick="closeModal()" class="btn-outline"
+                    style="flex: 1; border-color: #374151; color: #d1d5db;">Batal</button>
+                    <button type="submit" class="submit-btn"
+                    style="flex: 1; background: #059669; padding: 10px; font-size: 14px;">Ajukan</button>
+                </div>
+
+    @endif
             </form>
         </div>
     </div>
-
     <script>
         function openModal() {
             document.getElementById('withdrawModal').style.display = 'flex';

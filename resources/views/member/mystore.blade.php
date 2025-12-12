@@ -175,7 +175,7 @@
                                         </small>
                                     @endif
                                 </td>
-                                <td>Rp {{ number_format($order->grand_total, 0, ',', '.') }}.000</td>
+                                <td>Rp {{ number_format($order->grand_total-2, 0, ',', '.') }}.000</td>
                                 <td>
                                     @if ($order->shipping=='pesanan-diproses')
                                     <span class="badge bg-pending">{{ $order->shipping }}</span>

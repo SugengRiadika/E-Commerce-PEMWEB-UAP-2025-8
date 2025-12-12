@@ -202,7 +202,7 @@
                                             </div>
                                         @endforeach
                                         <div style="font-size: 12px; color: #d1d5db; font-weight: 600; margin-top: 5px;">
-                                            Total: Rp {{ number_format($order->grand_total, 0, ',', '.') }}.000
+                                            Total: Rp {{ number_format($order->grand_total-2, 0, ',', '.') }}.000
                                         </div>
                                     </td>
 
@@ -256,7 +256,7 @@
                 </div>
 
                 <div style="margin-top: 20px;">
-                    {{ $status->appends(['status' => request('status')])->links() }}
+                    {{ $recentOrders->links() }}
                 </div>
             </div>
         </div>

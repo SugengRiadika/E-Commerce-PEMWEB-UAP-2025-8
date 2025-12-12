@@ -208,7 +208,7 @@
                 @php
                     $dashboardRoute =
                         Auth::user()->isAdmin() ? route('admin.dashboard') :
-                        (Auth::user()->isSeller() ? route('seller.dashboard') :
+                        (Auth::user()->isSeller() ? route('member.mystore') :
                             route('member.dashboard'));
                 @endphp
                 <div class="nav-actions">
